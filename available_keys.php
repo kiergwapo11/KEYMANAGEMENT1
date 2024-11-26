@@ -20,7 +20,7 @@ function connectToDatabase($dbname) {
 $conn_to_borrow_keys = connectToDatabase($dbname_key_borrowing);
 
 // Fetch available keys from the database
-$sql = "SELECT * FROM avail_keys WHERE is_borrowed = 0";
+$sql = "SELECT * FROM avail_keys";
 $result = $conn_to_borrow_keys->query($sql);
 ?>
 
@@ -51,7 +51,7 @@ $result = $conn_to_borrow_keys->query($sql);
             // Dynamically display keys from the database
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo '<div class="slider-img" onclick="selectKey(this)">';
+                    echo '<div class="slider-img" onclick="selectKey(this, ' . $row["is_borrowed"] . ')">';
                     echo '<img src="Images/keys.png" alt="Key">';
                     echo '<div class="details">';
                     echo '<h1>' . htmlspecialchars($row["key_name"]) . '</h1>';
@@ -60,7 +60,7 @@ $result = $conn_to_borrow_keys->query($sql);
                     echo '</div>';
                 }
             } else {
-                echo '<p>No available keys at the moment.</p>';
+                echo '<p>No keys found.</p>';
             }
             ?>
         </div>
@@ -75,7 +75,12 @@ $result = $conn_to_borrow_keys->query($sql);
     <!-- JavaScript to handle key selection and form validation -->
     <script>
         // Function to handle key selection
-        function selectKey(element) {
+        function selectKey(element, isBorrowed) {
+            if (isBorrowed) {
+                alert('This key is already borrowed.');
+                return;
+            }
+            
             let keys = document.querySelectorAll('.slider-img');
             keys.forEach(function(key) {
                 key.classList.remove('selected');
