@@ -23,13 +23,13 @@ if (isset($_POST['logout'])) {
     <script src="https://kit.fontawesome.com/4804625ee9.js" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="admindashboard.css">
-    <title>ADMIN - CTU KEY MANAGEMENT SYSTEM tian kier kier</title>
+    <title>ADMIN - CTU KEY MANAGEMENT SYSTEM</title>
 </head> 
 <body>
 
     <div class="homepage">
         <div class="navigator">
-            <h2>DASHBOARD kier kier dili gwaAPO</h2>
+            <h2>DASHBOARD</h2>
             <ul>
                 <li> <a href="" onclick="showSection('admin')"> <i class="fa-solid fa-house"></i> ADMIN </a></li>
                 <li> <a href="registers.php" onclick="showSection('registers')"> <i class="fa-solid fa-pen-to-square"></i> REGISTERED </a></li>
