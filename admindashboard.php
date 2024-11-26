@@ -29,7 +29,7 @@ if (isset($_POST['logout'])) {
 
     <div class="homepage">
         <div class="navigator">
-            <h2>DASHBOARD kier kier gwaAPO</h2>
+            <h2>DASHBOARD kier kier dili gwaAPO</h2>
             <ul>
                 <li> <a href="" onclick="showSection('admin')"> <i class="fa-solid fa-house"></i> ADMIN </a></li>
                 <li> <a href="registers.php" onclick="showSection('registers')"> <i class="fa-solid fa-pen-to-square"></i> REGISTERED </a></li>
