@@ -31,16 +31,14 @@ if (isset($_POST['logout'])) {
         <div class="navigator">
             <h2>DASHBOARD</h2>
             <ul>
-                <li> <a href="" onclick="showSection('admin')"> <i class="fa-solid fa-house"></i> ADMIN </a></li>
-                <li> <a href="registers.php" onclick="showSection('registers')"> <i class="fa-solid fa-pen-to-square"></i> REGISTERED </a></li>
-                <li> <a href="records.php" onclick="showSection('records')"> <i class="fa-solid fa-key"></i> RECORDS </a></li>
+                <li> <a href="#" onclick="loadContent('admin')"> <i class="fa-solid fa-house"></i> ADMIN </a></li>
+                <li> <a href="#" onclick="loadContent('registers')"> <i class="fa-solid fa-pen-to-square"></i> REGISTERED </a></li>
+                <li> <a href="#" onclick="loadContent('records')"> <i class="fa-solid fa-key"></i> RECORDS </a></li>
                 
-                <!-- Update the logout button with a form to trigger logout -->
                 <li class="logout">
                     <a href="#" onclick="document.getElementById('logoutForm').submit();">
                         <i class="fa-solid fa-right-from-bracket"></i> Log out
                     </a>
-                    <!-- Hidden form to handle logout on link click -->
                     <form id="logoutForm" method="post" style="display: none;">
                         <input type="hidden" name="logout" value="1">
                     </form>
@@ -48,17 +46,74 @@ if (isset($_POST['logout'])) {
             </ul>
         </div>
 
-        <div class="searchbar">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search...">
-        </div>
 
-        <div class="greetings">
-            <h2> Welcome back, Admin!</h2>
-            <p>Welcome to the admin dashboard!</p>
-            <img src="Images/work.png" class="image"> 
+
+            <div id="mainContent">
+                <div class="greetings">
+                    <h2> Welcome back, Admin!</h2>
+                    <p>Welcome to the admin dashboard!</p>
+                    <img src="Images/work.png" class="image"> 
+                </div>
+            </div>
         </div>
-        
     </div>
+
+    <script>
+    function loadContent(page) {
+        // First check if the element exists
+        const mainContent = document.getElementById('mainContent');
+        if (!mainContent) {
+            console.error('Could not find mainContent element');
+            return;
+        }
+
+        if (page === 'registers') {
+            // Show loading state
+            mainContent.innerHTML = 'Loading...';
+            
+            fetch('registers.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    // Make sure mainContent still exists before setting innerHTML
+                    const contentDiv = document.getElementById('mainContent');
+                    if (contentDiv) {
+                        contentDiv.innerHTML = html;
+                    } else {
+                        console.error('mainContent element not found after fetch');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const contentDiv = document.getElementById('mainContent');
+                    if (contentDiv) {
+                        contentDiv.innerHTML = 'Error loading content: ' + error;
+                    }
+                });
+        } else if (page === 'admin') {
+            mainContent.innerHTML = `
+                <div class="greetings">
+                    <h2> Welcome back, Admin!</h2>
+                    <p>Welcome to the admin dashboard!</p>
+                    <img src="Images/work.png" class="image"> 
+                </div>
+            `;
+        }
+    }
+
+    // Add this to verify the element exists when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainContent = document.getElementById('mainContent');
+        if (!mainContent) {
+            console.error('mainContent element not found on page load');
+        } else {
+            console.log('mainContent element found successfully');
+        }
+    });
+    </script>
 </body>
 </html>
