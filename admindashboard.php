@@ -9,7 +9,6 @@ if (!isset($_SESSION['admin_id']) || !isset($_SESSION['admin_email'])) {
 
 // Check if the logout button was clicked
 if (isset($_POST['logout'])) {
-    // Destroy the session to log out the admin
     session_unset();
     session_destroy();
     header("Location: adminlogin.php");
@@ -26,15 +25,13 @@ if (isset($_POST['logout'])) {
     <title>ADMIN - CTU KEY MANAGEMENT SYSTEM</title>
 </head> 
 <body>
-
     <div class="homepage">
         <div class="navigator">
             <h2>DASHBOARD</h2>
             <ul>
-                <li> <a href="#" onclick="loadContent('admin')"> <i class="fa-solid fa-house"></i> ADMIN </a></li>
-                <li> <a href="#" onclick="loadContent('registers')"> <i class="fa-solid fa-pen-to-square"></i> REGISTERED </a></li>
-                <li> <a href="#" onclick="loadContent('records')"> <i class="fa-solid fa-key"></i> RECORDS </a></li>
-                
+                <li><a href="#" onclick="loadContent('admin')"><i class="fa-solid fa-house"></i> ADMIN</a></li>
+                <li><a href="#" onclick="loadContent('registers')"><i class="fa-solid fa-pen-to-square"></i> REGISTERED</a></li>
+                <li><a href="#" onclick="loadContent('records')"><i class="fa-solid fa-key"></i> RECORDS</a></li>
                 <li class="logout">
                     <a href="#" onclick="document.getElementById('logoutForm').submit();">
                         <i class="fa-solid fa-right-from-bracket"></i> Log out
@@ -46,13 +43,50 @@ if (isset($_POST['logout'])) {
             </ul>
         </div>
 
-
-
+        <div class="main">
             <div id="mainContent">
                 <div class="greetings">
-                    <h2> Welcome back, Admin!</h2>
-                    <p>Welcome to the admin dashboard!</p>
-                    <img src="Images/work.png" class="image"> 
+                    <h2>Welcome back, Admin!</h2><br>
+                    <p>Here is an overview of your key management</p><br>
+                    <p>tasks for today. You can manage users, track</p><br>
+                    <p>borrowed items, and check recent activities</p><br>
+                    <p>from this dashboard.</p>
+                    <img src="Images/work.png" class="image">
+
+                    <div class="statistics">
+                        <h2>STATISTICS</h2>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <h3>Registered Users</h3>
+                            <p>
+                                <?php
+                                // Database connection
+                                $conn = mysqli_connect("localhost", "root", "", "login_register");
+                                if ($conn->connect_error) {
+                                    die("Connection failed: " . $conn->connect_error);
+                                }
+
+                                // Count registered users
+                                $sql = "SELECT COUNT(*) as total FROM users";
+                                $result = $conn->query($sql);
+                                $data = $result->fetch_assoc();
+                                echo $data['total'];
+
+                                $conn->close();
+                                ?>
+                            </p>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-key"></i>
+                            <h3>Items Borrowed</h3>
+                            <p>45</p>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-hand-holding-hand"></i>
+                            <h3>Returned Key</h3>
+                            <p>3</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,60 +94,69 @@ if (isset($_POST['logout'])) {
 
     <script>
     function loadContent(page) {
-        // First check if the element exists
         const mainContent = document.getElementById('mainContent');
-        if (!mainContent) {
-            console.error('Could not find mainContent element');
-            return;
-        }
-
+        
         if (page === 'registers') {
-            // Show loading state
-            mainContent.innerHTML = 'Loading...';
-            
             fetch('registers.php')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
+                .then(response => response.text())
                 .then(html => {
-                    // Make sure mainContent still exists before setting innerHTML
-                    const contentDiv = document.getElementById('mainContent');
-                    if (contentDiv) {
-                        contentDiv.innerHTML = html;
-                    } else {
-                        console.error('mainContent element not found after fetch');
-                    }
+                    mainContent.innerHTML = html;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    const contentDiv = document.getElementById('mainContent');
-                    if (contentDiv) {
-                        contentDiv.innerHTML = 'Error loading content: ' + error;
-                    }
+                    mainContent.innerHTML = 'Error loading content: ' + error;
                 });
         } else if (page === 'admin') {
             mainContent.innerHTML = `
                 <div class="greetings">
-                    <h2> Welcome back, Admin!</h2>
-                    <p>Welcome to the admin dashboard!</p>
-                    <img src="Images/work.png" class="image"> 
+                    <h2>Welcome back, Admin!</h2><br>
+                    <p>Here is an overview of your key management</p><br>
+                    <p>tasks for today. You can manage users, track</p><br>
+                    <p>borrowed items, and check recent activities</p><br>
+                    <p>from this dashboard.</p>
+                    <img src="Images/work.png" class="image">
+
+                    <div class="statistics">
+                        <h2>STATISTICS</h2>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            <h3>Registered Users</h3>
+                            <p>
+                                <?php
+                                // Database connection
+                                $conn = mysqli_connect("localhost", "root", "", "login_register");
+                                if ($conn->connect_error) {
+                                    die("Connection failed: " . $conn->connect_error);
+                                }
+
+                                // Count registered users
+                                $sql = "SELECT COUNT(*) as total FROM users";
+                                $result = $conn->query($sql);
+                                $data = $result->fetch_assoc();
+                                echo $data['total'];
+
+                                $conn->close();
+                                ?>
+                            </p>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-key"></i>
+                            <h3>Items Borrowed</h3>
+                            <p>45</p>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-hand-holding-hand"></i>
+                            <h3>Returned Key</h3>
+                            <p>3</p>
+                        </div>
+                    </div>
                 </div>
             `;
+        } else if (page === 'records') {
+            // Handle records content
+            mainContent.innerHTML = '<h2>Records Content</h2>';
         }
     }
-
-    // Add this to verify the element exists when the page loads
-    document.addEventListener('DOMContentLoaded', function() {
-        const mainContent = document.getElementById('mainContent');
-        if (!mainContent) {
-            console.error('mainContent element not found on page load');
-        } else {
-            console.log('mainContent element found successfully');
-        }
-    });
     </script>
 </body>
 </html>

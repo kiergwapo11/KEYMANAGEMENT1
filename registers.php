@@ -7,14 +7,14 @@ if ($conn->connect_error) {
 ?>
 
 <div class="registers">
-    <h1>Registered Users</h1>
+    <h1>REGISTERED USERS</h1>
     <table>
         <thead>
             <tr>
-                <th>name</th>
-                <th>Id number</th>
-                <th>Section</th>
-                <th>Email</th>
+                <th>NAME</th>
+                <th>ID NUMBER</th>
+                <th>SECTION</th>
+                <th>EMAIL</th>
             </tr>
         </thead>
         <tbody>
