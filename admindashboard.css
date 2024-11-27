@@ -5,115 +5,218 @@
     list-style: none;
 }
 
-
 body{
-    background-color:#d9dee0;
-    background-size: 100%;
-
+    background-image: linear-gradient(180deg, #bdc3c7, #2c3e50);
+    height: 100vh; 
+    margin: 0; 
 }
+
 .homepage{
     display: flex;
     position: relative;
 }
+
 .homepage h2{
-    color: rgb(28, 27, 29);;
+    color: #f1ad54;
     margin-left: 35px;
-    margin-top: 80px;
+    margin-top: 100px;
     margin-bottom: 20px;
     font-family: "Holtwood One SC", serif;
     font-weight: 800;
     font-size: 25px;
 }
 .homepage .navigator h2::first-letter{
-
     font-size: 1.5em;
-
 }
 .homepage .navigator{
     position: fixed;
     width: 250px;
-    height: 710px;
+    height: 100%;
     border-radius: 20px;
-    background-color: #fffdfd;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0px 0px 16px 20px;
+    color: #2222;
 }
+
 .homepage .navigator ul{
-    margin-top: 50px;
-    
+    margin-top: 100px;
 }
+
 .homepage .navigator ul li{
     padding: 30px;
 }
-.homepage .navigator ul li a {
 
+.homepage .navigator ul li a {
     text-decoration: none;
     color: #697565;
-    padding: 10px;  
+    padding: 20px;  
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 400;
     font-style: normal; 
 }
+
 .homepage .navigator ul li a:hover{
     color: black;
     font-weight: 600;
 }
+
 .homepage .navigator ul li i{
     color: #697565;
     padding-right: 20px;
 }
+
 .logout{
     margin-top: 60px;
     margin-left: 30px;
 }
+
 .navigator ul .logout a i{
-    color: rgb(20, 1, 65);
+    color: #f1ad54;
 }
+
 .homepage .navigator ul .logout a{
     font-size: 15px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 600;
-    color: rgb(20, 1, 65);
+    color: #f1ad54;
 }
-.searchbar{
-    margin-left: 300px;
-    margin-top: 30px;
+
+.image{
+    width: 400px;
+    margin-left: 430px;
+    margin-top: -270px;
 }
-.searchbar input{
-    width: 450px;
-    padding: 15px 20px;
-    border-radius: 10px;
-    border: none;
-    padding-left: 60px;
-    background-color: #dfe7e9;
-}
-.searchbar i{
-    position: absolute;
-    padding-top: 15px;
-    padding-left: 15px;
-    background-color: #cacecf;
-    padding-bottom: 15px;
-    padding-right: 15px;
-    border-radius: 10px;
-}
+
 .greetings{
-    position:absolute;
-    margin-top: 150px;
-    margin-left: 300px;
-    background-color: #FEFAE0;
-    width: 700px;
-    height: 250px;
+    position: absolute;
+    margin-top: 200px;
+    margin-left: 350px;
+    background-color: #E4E0E1;
+    box-shadow: 0px 0px 16px 13px;
+    color: #2222;
+    width: 800px;
+    height: 350px;
     border-radius: 20px;
-    
 }
+
 .greetings h2{
-    font-size: 25px;
+    font-size: 40px;
     margin-top: 50px;
-    
+    margin-left: 20px;
+    color: #f1ad54;
 }
+
 .greetings p{
     padding-left: 30px;
+    font-size: 20px;
+    color: #697565;
 }
-.image{
-    width: 350px;
-    margin-left: 350px;
-    margin-top: -260px;
+
+.statistics {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding-top: 10px;
+    margin-left: 870px;
+    margin-top: -400px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    height: 450px;
+    width: 400px;
+    box-shadow: 0px 0px 16px 10px;
+    color: #2222;
+}
+
+.statistics h2{
+    color: orange;
+    margin-top: 10px;
+    margin-left: -10px;
+}
+
+.stat-item {
+    width: 70%;
+    box-shadow: 0px 0px 10px 3px;
+    color: black;
+    padding: 5px;
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.stat-item h3 {
+    font-size: 18px;
+    color: #697565;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.stat-item p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #697565;
+    margin-left: -20px;
+}
+
+.stat-item i{
+    position: absolute;
+    margin-left: -100px;
+    margin-top: 20px;
+    color: #697565;
+}
+
+.stat-item:hover{
+    color: orange;
+}
+
+/* Additional styles for the registers table */
+#mainContent .registers {
+    background-color: #E4E0E1;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0px 0px 16px 13px;
+    color: #2222;
+    width: 1000px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 100px;
+}
+
+#mainContent .registers h1 {
+    color: #f1ad54;
+    font-family: "Holtwood One SC", serif;
+    font-size: 35px;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#mainContent .registers table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+#mainContent .registers th,
+#mainContent .registers td {
+    padding: 20px 25px;
+    text-align: left;
+    border-bottom: 1px solid #697565;
+    color: #697565;
+}
+
+#mainContent .registers th {
+    background-color: rgba(0, 0, 0, 0.1);
+    font-weight: 600;
+    font-size: 18px;
+}
+
+#mainContent .registers tr:hover {
+    background-color: rgba(241, 173, 84, 0.1);
+}
+
+#mainContent .registers td:not(:last-child),
+#mainContent .registers th:not(:last-child) {
+    padding-right: 40px;
 }
