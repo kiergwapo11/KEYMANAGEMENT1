@@ -1,4 +1,13 @@
 <?php
+session_start(); // Add this at the top to access session
+
+// Check if user is logged in
+if (!isset($_SESSION['user'])) {
+    // Redirect to login page if not logged in
+    header("Location: studentlogin.php");
+    exit;
+}
+
 // Include the database connection file
 require_once 'database.php';
 
@@ -22,44 +31,28 @@ if (!$result) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Available Keys</title>
     <link rel="stylesheet" href="1st_flr.css">
-    <style>
-        /* Add styles for disabled keys */
-        .slider-img.disabled {
-            opacity: 0.5; /* Make the key appear faded */
-            pointer-events: none; /* Prevent clicking */
-            cursor: not-allowed;
-        }
-
-        .slider-img.selected {
-            border: 2px solid #4CAF50; /* Highlight selected key */
-        }
-    </style>
+   
+  
 </head>
 <body>
 
-<!-- Borrow Form -->
+<?php if (isset($_SESSION['user'])): ?>
+  <!-- Update your form structure -->
 <form id="borrowForm" method="POST" action="borrow_key.php">
     <input type="hidden" id="selectedKey" name="selectedKey" value="">
-    <!-- Add hidden inputs for user details -->
-    <input type="text" name="username" placeholder="Enter your username" required>
-    <input type="number" name="idnum" placeholder="Enter your ID number" required>
-    <select name="section" required>
-        <option value="">Select Section</option>
-        <!-- Populate with your section options -->
-        <option value="BSCpE 1">BSCpE 1</option>
-        <option value="BSCpE 2-Day">BSCpE 2-Day</option>
-        <option value="BSCpE 2A-Night">BSCpE 2A-Night</option>
-        <!-- More sections here -->
-    </select>
-    <button type="submit">Borrow</button>
+    <input type="hidden" name="idnum" value="<?php echo htmlspecialchars($_SESSION['user']); ?>">
+    
+    <!-- Only the borrow button -->
+    <button type="submit">Borrow Key</button>
 </form>
-
+    <!-- Navigation -->
     <div class="Home Page">
         <div class="navbar">
             <ul>
                 <li><a href="available_keys.php">FIRST FLOOR <i class="fa fa-key"></i></a></li>
                 <li><a href="3rd_flr.html">SECOND FLOOR <i class="fa fa-key"></i></a></li>
                 <li><a href="4th_flr.html">THIRD FLOOR <i class="fa fa-key"></i></a></li>
+                <li><a href="homepage.php">HOME</a></li>
             </ul>
         </div>
     </div>
@@ -69,77 +62,68 @@ if (!$result) {
     <section class="slider-container">
         <div class="slider-images">
             <?php
-            // Dynamically display keys from the database
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     $isBorrowed = $row['is_borrowed'];
                     $keyName = htmlspecialchars($row["key_name"]);
                     $floor = htmlspecialchars($row["floor"]);
-
-                    // Add a 'disabled' class for borrowed keys
-                    $disabledClass = $isBorrowed ? 'disabled' : '';
-                    $clickHandler = $isBorrowed ? '' : 'onclick="selectKey(this)"';
-
-                    echo '<div class="slider-img ' . $disabledClass . '" ' . $clickHandler . '>';
-                    echo '<img src="Images/keys.png" alt="Key">';
-                    echo '<div class="details">';
-                    echo '<h1>' . $keyName . '</h1>';
-                    echo '<p>Floor: ' . $floor . '</p>';
-                    echo '</div>';
-                    echo '</div>';
+                    ?>
+                    <div class="key-container <?php echo $isBorrowed ? 'disabled' : ''; ?>">
+                        <div class="slider-img <?php echo $isBorrowed ? 'disabled' : ''; ?>" 
+                             onclick="<?php echo !$isBorrowed ? 'borrowKey(\''.$keyName.'\')' : 'showBorrowedMessage(\''.$keyName.'\')'; ?>">
+                            <img src="Images/keys.png" alt="Key">
+                            <div class="details">
+                                <h1><?php echo $keyName; ?></h1>
+                                <p>Floor: <?php echo $floor; ?></p>
+                                <?php if ($isBorrowed): ?>
+                                    <p class="borrowed-status">Currently Borrowed</p>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
                 }
-            } else {
-                echo '<p>No available keys at the moment.</p>';
             }
             ?>
         </div>
     </section>
 
-    
+<?php else: ?>
+    <!-- Show message for non-logged-in users -->
+    <div class="login-message">
+        Please <a href="studentlogin.php" style="color: white; text-decoration: underline;">login</a> to borrow keys.
+    </div>
+<?php endif; ?>
 
+<script>
 
-    <!-- JavaScript to handle key selection and form validation -->
-    <script>
-
-        // Function to handle key selection
-function selectKey(element) {
-    let keys = document.querySelectorAll('.slider-img');
-    keys.forEach(function(key) {
-        key.classList.remove('selected');
-    });
-    element.classList.add('selected');
-
-    // Update the hidden input with the selected key name
-    const selectedKeyName = element.querySelector('.details h1').innerText;
-    document.getElementById('selectedKey').value = selectedKeyName;
-}
-
-        // Function to handle key selection
-        function selectKey(element) {
-            let keys = document.querySelectorAll('.slider-img');
-            keys.forEach(function(key) {
-                key.classList.remove('selected');
-            });
-            element.classList.add('selected');
-
-            // Update the hidden input with the selected key name
-            const selectedKeyName = element.querySelector('.details h1').innerText;
-            document.getElementById('selectedKey').value = selectedKeyName;
-        }
-
-        // Form validation before submission
-        document.getElementById('borrowForm').addEventListener('submit', function (e) {
-            if (!document.getElementById('selectedKey').value) {
-                e.preventDefault();
-                alert('Please select a key before borrowing.');
+function borrowKey(keyName) {
+    if (confirm('Do you want to borrow ' + keyName + '?')) {
+        fetch('borrow_key.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                selectedKey: keyName
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Successfully borrowed ' + keyName);
+                location.reload();
+            } else {
+                alert('Error: ' + (data.message || 'Failed to borrow key'));
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
         });
-    </script>
-
-<?php
-// Close the database connection
-$conn->close();
-?>
+    }
+}
+</script>
 
 </body>
 </html>

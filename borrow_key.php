@@ -1,60 +1,70 @@
 <?php
-// Include the database connection file
+session_start();
 require_once 'database.php';
 
-// Use the existing connection for key_records
-$conn = $conn_key_records;
+// Basic error handling
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Get the selected key name and other form data
-    $selectedKey = $_POST["selectedKey"] ?? null;
-    $username = $_POST["username"] ?? null;
-    $borrower_id = $_POST["idnum"] ?? null;
-    $section = $_POST["section"] ?? null;
-    $borrow_date = date('Y-m-d H:i:s'); // Set the borrow date to current time
+header('Content-Type: application/json');
 
-    if ($selectedKey && $username && $borrower_id && $section) {
-        // Start by marking the key as borrowed in the avail_keys table
-        $sql_update_key = "UPDATE avail_keys SET is_borrowed = 1 WHERE key_name = ?";
+try {
+    // Get the POST data
+    $data = json_decode(file_get_contents('php://input'), true);
+    $selectedKey = $data['selectedKey'];
+    $borrower_id = $_SESSION['user'];
 
-        // Use a prepared statement to prevent SQL injection
-        $stmt_update_key = $conn->prepare($sql_update_key);
-        $stmt_update_key->bind_param("s", $selectedKey);
+    // First, get the name and section from login_register database
+    $userSql = "SELECT name, section FROM users WHERE idnum = ?";
+    $userStmt = $conn_login_register->prepare($userSql);
+    $userStmt->bind_param("s", $borrower_id);
+    $userStmt->execute();
+    $userResult = $userStmt->get_result();
+    
+    if ($userResult->num_rows > 0) {
+        $userData = $userResult->fetch_assoc();
+        $name = $userData['name'];
+        $section = $userData['section'];
 
-        if ($stmt_update_key->execute()) {
-            // Insert the borrowing record into the 'users' table
-            $sql_insert_user = "INSERT INTO users (username, borrower_id, borrower_section, key_name, borrow_date) VALUES (?, ?, ?, ?, ?)";
-
-            // Prepare and bind the insert query
-            $stmt_insert_user = $conn->prepare($sql_insert_user);
-            $stmt_insert_user->bind_param("sssss", $username, $borrower_id, $section, $selectedKey, $borrow_date);
-
-            if ($stmt_insert_user->execute()) {
-                // Success message
-                echo "The key '$selectedKey' has been successfully borrowed by $username.";
+        // Use key_records database for key operations
+        $sql = "UPDATE avail_keys SET is_borrowed = 1 WHERE key_name = ?";
+        $stmt = $conn_key_records->prepare($sql);
+        $stmt->bind_param("s", $selectedKey);
+        
+        if ($stmt->execute()) {
+            // Insert into records in key_records database with name and section
+            $recordSql = "INSERT INTO users (username, borrower_id, key_name, borrower_section, borrow_date) 
+                         VALUES (?, ?, ?, ?, NOW())";
+            $recordStmt = $conn_key_records->prepare($recordSql);
+            $recordStmt->bind_param("ssss", $name, $borrower_id, $selectedKey, $section);
+            
+            if ($recordStmt->execute()) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => "Key borrowed successfully by $name from section $section"
+                ]);
             } else {
-                // Handle insert error
-                echo "Error inserting the borrowing record: " . $stmt_insert_user->error;
+                throw new Exception('Failed to record borrowing');
             }
-
-            // Close the insert statement
-            $stmt_insert_user->close();
         } else {
-            // Handle error when updating the key status
-            echo "Error updating key status: " . $stmt_update_key->error;
+            throw new Exception('Failed to update key status');
         }
-
-        // Close the update statement
-        $stmt_update_key->close();
     } else {
-        echo "Please fill in all required fields and select a key.";
+        throw new Exception('User not found');
     }
-} else {
-    echo "Invalid request.";
+
+} catch (Exception $e) {
+    error_log("Error in borrow_key.php: " . $e->getMessage());
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 
-// Close the database connection
-$conn->close();
+// Close all connections
+if (isset($userStmt)) $userStmt->close();
+if (isset($stmt)) $stmt->close();
+if (isset($recordStmt)) $recordStmt->close();
+$conn_key_records->close();
+$conn_login_register->close();
 ?>
-
-<button class="back-button" onclick="window.location.href='homepage.php'">Back to Homepage</button>
