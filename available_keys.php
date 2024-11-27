@@ -1,27 +1,18 @@
 <?php
-// Database connection code
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname_key_borrowing = "key_borrowing";
+// Include the database connection file
+require_once 'database.php';
 
-function connectToDatabase($dbname) {
-    global $servername, $username, $password;
+// Use the existing connection for key_records
+$conn = $conn_key_records;
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+// Fetch all keys and their borrowed status from the database
+$sql = "SELECT * FROM avail_keys";
+$result = $conn->query($sql);
 
-    if ($conn->connect_error) {
-        die("Connection to database $dbname failed: " . $conn->connect_error);
-    }
-
-    return $conn;
+// Check for query errors
+if (!$result) {
+    die("Query failed: " . $conn->error);
 }
-
-$conn_to_borrow_keys = connectToDatabase($dbname_key_borrowing);
-
-// Fetch available keys from the database
-$sql = "SELECT * FROM avail_keys WHERE is_borrowed = 0";
-$result = $conn_to_borrow_keys->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -31,6 +22,36 @@ $result = $conn_to_borrow_keys->query($sql);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Available Keys</title>
     <link rel="stylesheet" href="1st_flr.css">
+    <style>
+        /* Add styles for disabled keys */
+        .slider-img.disabled {
+            opacity: 0.5; /* Make the key appear faded */
+            pointer-events: none; /* Prevent clicking */
+            cursor: not-allowed;
+        }
+
+        .slider-img.selected {
+            border: 2px solid #4CAF50; /* Highlight selected key */
+        }
+    </style>
+
+    <!-- Borrow Form -->
+    <form id="borrowForm" method="POST" action="borrow_key.php">
+    <input type="hidden" id="selectedKey" name="selectedKey" value="">
+    <!-- Add hidden inputs for user details -->
+    <input type="text" name="username" placeholder="Enter your username" required>
+    <input type="number" name="idnum" placeholder="Enter your ID number" required>
+    <select name="section" required>
+        <option value="">Select Section</option>
+        <!-- Populate with your section options -->
+        <option value="BSCpE 1">BSCpE 1</option>
+        <option value="BSCpE 2-Day">BSCpE 2-Day</option>
+        <option value="BSCpE 2A-Night">BSCpE 2A-Night</option>
+        <!-- More sections here -->
+    </select>
+    <button type="submit">Borrow</button>
+</form>
+
 </head>
 <body>
     <div class="Home Page">
@@ -51,11 +72,19 @@ $result = $conn_to_borrow_keys->query($sql);
             // Dynamically display keys from the database
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    echo '<div class="slider-img" onclick="selectKey(this)">';
+                    $isBorrowed = $row['is_borrowed'];
+                    $keyName = htmlspecialchars($row["key_name"]);
+                    $floor = htmlspecialchars($row["floor"]);
+
+                    // Add a 'disabled' class for borrowed keys
+                    $disabledClass = $isBorrowed ? 'disabled' : '';
+                    $clickHandler = $isBorrowed ? '' : 'onclick="selectKey(this)"';
+
+                    echo '<div class="slider-img ' . $disabledClass . '" ' . $clickHandler . '>';
                     echo '<img src="Images/keys.png" alt="Key">';
                     echo '<div class="details">';
-                    echo '<h1>' . htmlspecialchars($row["key_name"]) . '</h1>';
-                    echo '<p>Floor: ' . htmlspecialchars($row["floor"]) . '</p>';
+                    echo '<h1>' . $keyName . '</h1>';
+                    echo '<p>Floor: ' . $floor . '</p>';
                     echo '</div>';
                     echo '</div>';
                 }
@@ -66,14 +95,25 @@ $result = $conn_to_borrow_keys->query($sql);
         </div>
     </section>
 
-    <!-- Borrow Form -->
-    <form id="borrowForm" method="POST" action="borrow_key.php">
-        <input type="hidden" id="selectedKey" name="selectedKey" value="">
-        <button type="submit">Borrow</button>
-    </form>
+    
+
 
     <!-- JavaScript to handle key selection and form validation -->
     <script>
+
+        // Function to handle key selection
+function selectKey(element) {
+    let keys = document.querySelectorAll('.slider-img');
+    keys.forEach(function(key) {
+        key.classList.remove('selected');
+    });
+    element.classList.add('selected');
+
+    // Update the hidden input with the selected key name
+    const selectedKeyName = element.querySelector('.details h1').innerText;
+    document.getElementById('selectedKey').value = selectedKeyName;
+}
+
         // Function to handle key selection
         function selectKey(element) {
             let keys = document.querySelectorAll('.slider-img');
@@ -98,7 +138,7 @@ $result = $conn_to_borrow_keys->query($sql);
 
 <?php
 // Close the database connection
-$conn_to_borrow_keys->close();
+$conn->close();
 ?>
 
 </body>
