@@ -16,15 +16,14 @@ require_once "database.php";
 $alertMessage = "";
 
 if (isset($_POST['login'])) {
-    $username = $_POST['username'];
+    $idnum = $_POST['idnum'];
     $password = $_POST['password'];
 
-    // Fetch user data based on email
-    $sql = "SELECT * FROM users WHERE email = ?";
+    $sql = "SELECT * FROM users WHERE idnum = ?";
     $stmt = mysqli_stmt_init($conn_login_register);
 
     if (mysqli_stmt_prepare($stmt, $sql)) {
-        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_bind_param($stmt, "s", $idnum);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
@@ -33,20 +32,19 @@ if (isset($_POST['login'])) {
             
             // Verify the password
             if (password_verify($password, $user['password'])) {
-                $_SESSION['user'] = $user['email']; // Set session for logged-in user
-                header("Location: homepage.php"); // Redirect to borrow.php
+                $_SESSION['user'] = $user['idnum'];
+                header("Location: homepage.php");
                 exit;
             } else {
                 $alertMessage = "Incorrect password.";
             }
         } else {
-            $alertMessage = "No user found with that email.";
+            $alertMessage = "No user found with that ID number.";
         }
     } else {
         $alertMessage = "Something went wrong: " . mysqli_stmt_error($stmt);
     }
 
-    // Close the statement and connection
     mysqli_stmt_close($stmt);
     mysqli_close($conn_login_register);
 }
@@ -57,7 +55,7 @@ if (isset($_POST['login'])) {
         <form action="studentlogin.php" method="post">
             <h1>STUDENT LOG IN</h1>
             <div class="input-box">
-                <input type="text" name="username" placeholder="Email" required>
+                <input type="text" name="idnum" placeholder="ID Number" required>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
