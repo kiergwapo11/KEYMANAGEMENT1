@@ -23,11 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($stmt_update_key->execute()) {
             // Insert the borrowing record into the 'users' table
-            $sql_insert_user = "INSERT INTO users (username, borrower_id, borrower_section, borrow_date) VALUES (?, ?, ?, ?)";
+            $sql_insert_user = "INSERT INTO users (username, borrower_id, borrower_section, key_name, borrow_date) VALUES (?, ?, ?, ?, ?)";
 
             // Prepare and bind the insert query
             $stmt_insert_user = $conn->prepare($sql_insert_user);
-            $stmt_insert_user->bind_param("ssss", $username, $borrower_id, $section, $borrow_date);
+            $stmt_insert_user->bind_param("sssss", $username, $borrower_id, $section, $selectedKey, $borrow_date);
 
             if ($stmt_insert_user->execute()) {
                 // Success message
