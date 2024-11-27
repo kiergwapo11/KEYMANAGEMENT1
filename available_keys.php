@@ -13,6 +13,9 @@ $result = $conn->query($sql);
 if (!$result) {
     die("Query failed: " . $conn->error);
 }
+// Fetch available keys from the database
+$sql = "SELECT * FROM avail_keys";
+$result = $conn_key_records->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -34,9 +37,11 @@ if (!$result) {
             border: 2px solid #4CAF50; /* Highlight selected key */
         }
     </style>
+</head>
+<body>
 
-    <!-- Borrow Form -->
-    <form id="borrowForm" method="POST" action="borrow_key.php">
+<!-- Borrow Form -->
+<form id="borrowForm" method="POST" action="borrow_key.php">
     <input type="hidden" id="selectedKey" name="selectedKey" value="">
     <!-- Add hidden inputs for user details -->
     <input type="text" name="username" placeholder="Enter your username" required>
@@ -52,8 +57,44 @@ if (!$result) {
     <button type="submit">Borrow</button>
 </form>
 
-</head>
-<body>
+
+    <!-- JavaScript to handle key selection and form validation -->
+    <script>
+
+        // Function to handle key selection
+function selectKey(element) {
+    let keys = document.querySelectorAll('.slider-img');
+    keys.forEach(function(key) {
+        key.classList.remove('selected');
+    });
+    element.classList.add('selected');
+
+    // Update the hidden input with the selected key name
+    const selectedKeyName = element.querySelector('.details h1').innerText;
+    document.getElementById('selectedKey').value = selectedKeyName;
+}
+
+        // Function to handle key selection
+        function selectKey(element) {
+            let keys = document.querySelectorAll('.slider-img');
+            keys.forEach(function(key) {
+                key.classList.remove('selected');
+            });
+            element.classList.add('selected');
+
+            // Update the hidden input with the selected key name
+            const selectedKeyName = element.querySelector('.details h1').innerText;
+            document.getElementById('selectedKey').value = selectedKeyName;
+        }
+
+        // Form validation before submission
+        document.getElementById('borrowForm').addEventListener('submit', function (e) {
+            if (!document.getElementById('selectedKey').value) {
+                e.preventDefault();
+                alert('Please select a key before borrowing.');
+            }
+        });
+    </script>
     <div class="Home Page">
         <div class="navbar">
             <ul>
@@ -96,45 +137,6 @@ if (!$result) {
     </section>
 
     
-
-
-    <!-- JavaScript to handle key selection and form validation -->
-    <script>
-
-        // Function to handle key selection
-function selectKey(element) {
-    let keys = document.querySelectorAll('.slider-img');
-    keys.forEach(function(key) {
-        key.classList.remove('selected');
-    });
-    element.classList.add('selected');
-
-    // Update the hidden input with the selected key name
-    const selectedKeyName = element.querySelector('.details h1').innerText;
-    document.getElementById('selectedKey').value = selectedKeyName;
-}
-
-        // Function to handle key selection
-        function selectKey(element) {
-            let keys = document.querySelectorAll('.slider-img');
-            keys.forEach(function(key) {
-                key.classList.remove('selected');
-            });
-            element.classList.add('selected');
-
-            // Update the hidden input with the selected key name
-            const selectedKeyName = element.querySelector('.details h1').innerText;
-            document.getElementById('selectedKey').value = selectedKeyName;
-        }
-
-        // Form validation before submission
-        document.getElementById('borrowForm').addEventListener('submit', function (e) {
-            if (!document.getElementById('selectedKey').value) {
-                e.preventDefault();
-                alert('Please select a key before borrowing.');
-            }
-        });
-    </script>
 
 <?php
 // Close the database connection
