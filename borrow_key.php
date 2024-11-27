@@ -1,55 +1,60 @@
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname_key_borrowing = "key_borrowing";
-$dbname_key_records = "key_records";
+// Include the database connection file
+require_once 'database.php';
 
-function connectToDatabase($dbname) {
-    global $servername, $username, $password;
+// Use the existing connection for key_records
+$conn = $conn_key_records;
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get the selected key name and other form data
+    $selectedKey = $_POST["selectedKey"] ?? null;
+    $username = $_POST["username"] ?? null;
+    $borrower_id = $_POST["idnum"] ?? null;
+    $section = $_POST["section"] ?? null;
+    $borrow_date = date('Y-m-d H:i:s'); // Set the borrow date to current time
 
-    if ($conn->connect_error) {
-        die("Connection to database $dbname failed: " . $conn->connect_error);
-    }
+    if ($selectedKey && $username && $borrower_id && $section) {
+        // Start by marking the key as borrowed in the avail_keys table
+        $sql_update_key = "UPDATE avail_keys SET is_borrowed = 1 WHERE key_name = ?";
 
-    return $conn;
-}
+        // Use a prepared statement to prevent SQL injection
+        $stmt_update_key = $conn->prepare($sql_update_key);
+        $stmt_update_key->bind_param("s", $selectedKey);
 
-$conn_to_borrow_keys = connectToDatabase($dbname_key_borrowing);
-$conn_key_records = connectToDatabase($dbname_key_records);
+        if ($stmt_update_key->execute()) {
+            // Insert the borrowing record into the 'users' table
+            $sql_insert_user = "INSERT INTO users (username, borrower_id, borrower_section, borrow_date) VALUES (?, ?, ?, ?)";
 
-// Get the selected key from the form
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selectedKey'])) {
-    $selectedKey = $conn_to_borrow_keys->real_escape_string($_POST['selectedKey']);
-    
-    // Check if the key is available
-    $sqlCheck = "SELECT * FROM avail_keys WHERE key_name = '$selectedKey' AND is_borrowed = 0";
-    $resultCheck = $conn_to_borrow_keys->query($sqlCheck);
+            // Prepare and bind the insert query
+            $stmt_insert_user = $conn->prepare($sql_insert_user);
+            $stmt_insert_user->bind_param("ssss", $username, $borrower_id, $section, $borrow_date);
 
-    if ($resultCheck->num_rows > 0) {
-        // Update avail_keys table to set is_borrowed to 1
-        $sqlUpdate = "UPDATE avail_keys SET is_borrowed = 1 WHERE key_name = '$selectedKey'";
-        $conn_to_borrow_keys->query($sqlUpdate);
+            if ($stmt_insert_user->execute()) {
+                // Success message
+                echo "The key '$selectedKey' has been successfully borrowed by $username.";
+            } else {
+                // Handle insert error
+                echo "Error inserting the borrowing record: " . $stmt_insert_user->error;
+            }
 
-        // Insert a record into key_records
-        $borrowDate = date("Y-m-d H:i:s");
-        $sql = "INSERT INTO users (key_name, borrow_date) VALUES ('$selectedKey', '$borrowDate')";
-        $stmt = mysqli_stmt_init($conn_key_records);
+            // Close the insert statement
+            $stmt_insert_user->close();
+        } else {
+            // Handle error when updating the key status
+            echo "Error updating key status: " . $stmt_update_key->error;
+        }
 
-        // Success message
-        echo "<script>alert('You have borrowed a key successfully!'); window.location.href='your_keys_page.php';</script>";
+        // Close the update statement
+        $stmt_update_key->close();
     } else {
-        // Error: Key is not available
-        echo "<script>alert('The key is not available for borrowing.'); window.location.href='your_keys_page.php';</script>";
+        echo "Please fill in all required fields and select a key.";
     }
 } else {
-    echo "No key selected.";
+    echo "Invalid request.";
 }
 
-// Close database connections
-$conn_to_borrow_keys->close();
-$conn_key_records->close();
+// Close the database connection
+$conn->close();
 ?>
+
+<button class="back-button" onclick="window.location.href='homepage.php'">Back to Homepage</button>
