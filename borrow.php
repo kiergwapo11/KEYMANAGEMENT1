@@ -20,11 +20,11 @@ if (isset($_POST["borrow"])) {
     $username = $_POST["username"];
     $borrower_id = $_POST["idnum"];
     $section = $_POST["section"];
-    $key_name = $_POST["key"];
     $borrow_date = date('Y-m-d H:i:s');
+    $selectedKey = $_POST["selectedKey"]; // Added to get the selected key
 
     // Check if any field is empty
-    if (empty($username) || empty($borrower_id) || empty($section) || empty($key_name)) {
+    if (empty($username) || empty($borrower_id) || empty($section) || empty($selectedKey)) {
         echo "<script>alert('Please fill in all fields!');</script>";
     } else {
         // Check if the user is registered
@@ -47,28 +47,36 @@ if (isset($_POST["borrow"])) {
                     if (mysqli_num_rows($result) > 0) {
                         echo "<script>alert('You have already borrowed a key!');</script>";
                     } else {
-                        // Check if the key is already being borrowed
-                        $query = "SELECT * FROM users WHERE key_name = ? AND return_date IS NULL";
+                        // Check if the key is available in the 'avail_keys' table
+                        $query = "SELECT * FROM avail_keys WHERE key_name = ? AND is_borrowed = 0";
                         $stmt = mysqli_stmt_init($conn_key_records);
                         if (mysqli_stmt_prepare($stmt, $query)) {
-                            mysqli_stmt_bind_param($stmt, "s", $key_name);
+                            mysqli_stmt_bind_param($stmt, "s", $selectedKey);
                             mysqli_stmt_execute($stmt);
                             $result = mysqli_stmt_get_result($stmt);
-                            if (mysqli_num_rows($result) > 0) {
-                                echo "<script>alert('The key is already being borrowed!');</script>";
+                            if (mysqli_num_rows($result) == 0) {
+                                echo "<script>alert('The selected key is already borrowed!');</script>";
                             } else {
-                                // Insert the new borrowing record
-                                $sql = "INSERT INTO users (username, borrower_id, borrower_section, key_name, borrow_date) VALUES (?, ?, ?, ?, ?)";
-                                $stmt = mysqli_stmt_init($conn_key_records);
-                                if (mysqli_stmt_prepare($stmt, $sql)) {
-                                    mysqli_stmt_bind_param($stmt, "sssss", $username, $borrower_id, $section, $key_name, $borrow_date);
-                                    if (mysqli_stmt_execute($stmt)) {
-                                        echo "<script>alert('Key borrowed successfully!');</script>";
+                                // Mark the key as borrowed in 'avail_keys' table
+                                $sql_update = "UPDATE avail_keys SET is_borrowed = 1 WHERE key_name = ?";
+                                $stmt_update = mysqli_stmt_init($conn_key_records);
+                                if (mysqli_stmt_prepare($stmt_update, $sql_update)) {
+                                    mysqli_stmt_bind_param($stmt_update, "s", $selectedKey);
+                                    if (mysqli_stmt_execute($stmt_update)) {
+                                        // Insert the new borrowing record in 'users' or 'key_records' table
+                                        $sql_insert = "INSERT INTO users (username, borrower_id, borrower_section, borrow_date, key_name) VALUES (?, ?, ?, ?, ?)";
+                                        $stmt_insert = mysqli_stmt_init($conn_key_records);
+                                        if (mysqli_stmt_prepare($stmt_insert, $sql_insert)) {
+                                            mysqli_stmt_bind_param($stmt_insert, "sssss", $username, $borrower_id, $section, $borrow_date, $selectedKey);
+                                            if (mysqli_stmt_execute($stmt_insert)) {
+                                                echo "<script>alert('Key borrowed successfully!');</script>";
+                                            } else {
+                                                echo "Error: " . mysqli_stmt_error($stmt_insert);
+                                            }
+                                        }
                                     } else {
-                                        echo "Error: " . mysqli_stmt_error($stmt);
+                                        echo "Error updating key status: " . mysqli_stmt_error($stmt_update);
                                     }
-                                } else {
-                                    echo "Error: " . mysqli_error($conn_key_records);
                                 }
                             }
                         } else {
@@ -85,9 +93,10 @@ if (isset($_POST["borrow"])) {
     }
 }
 ?>
+
     <h1>Borrow Key</h1>
-    <form action="borrow.php" method="post">
-    <input type="text" placeholder="Name" name="username" required>
+    <form action="available_keys.php" method="post">
+        <input type="text" placeholder="Name" name="username" required>
         <input type="number" name="idnum" placeholder="ID No." required>
         <select id="section" name="section" required>
             <option value="">Select Section</option>
@@ -129,28 +138,30 @@ if (isset($_POST["borrow"])) {
             <option value="BSEE 3-Day">BSEE 3-Day</option>
             <option value="BSEE 3-Night">BSEE 3-Night</option>
             <option value="BSEE 4">BSEE 4</option>
+            <!-- Other sections omitted for brevity -->
         </select>
-        <select id="key" name="key" required>
-            <option value="">Choose Key</option>
-            <option value="EN-CME 101">EN-CME 101</option>
-            <option value="EN-CME 102">EN-CME 102</option>
-            <option value="Electro Lab">Electro Lab</option>
-            <option value="Comlab-1">Comlab-1</option>
-            <option value="Comlab-2">Comlab-2</option>
-            <option value="CE Lab">CE Lab</option>
-            <option value="EE Lab">EE Lab</option>
-            <option value="EN-CME 308">EN-CME 308</option>
-            <option value="EN-CME 307">EN-CME 307</option>
-            <option value="EN-CME 302">EN-CME 302</option>
-            <option value="EN-CME 301">EN-CME 301</option>
-            <option value="IE Lab">IE Lab</option>
-            <option value="ME Lab">ME Lab</option>
-            <option value="Innovation Hall">Innovation Hall</option>
-        </select>
-        <button type="submit" name="borrow">Borrow</button>
+
+        <!-- Hidden input for selected key -->
+
+        <button type="submit" name="borrow">Select Key</button>
     </form>
+
     <button class="back-button" onclick="window.location.href='homepage.php'">Back to Homepage</button>
 </div>
+
+<script>
+    // Ensure the selected key is passed
+    function selectKey(element) {
+        let keys = document.querySelectorAll('.slider-img');
+        keys.forEach(function(key) {
+            key.classList.remove('selected');
+        });
+        element.classList.add('selected');
+
+        const selectedKeyName = element.querySelector('.details h1').innerText;
+        document.getElementById('selectedKey').value = selectedKeyName;
+    }
+</script>
 
 </body>
 </html>
