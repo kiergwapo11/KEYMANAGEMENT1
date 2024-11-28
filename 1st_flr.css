@@ -223,22 +223,6 @@ button[type="submit"]:disabled {
     filter: none;
 }
 
-/* Add status indicator */
-.slider-img::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #4CAF50; /* Green for available */
-}
-
-.slider-img.disabled::before {
-    background-color: #f44336; /* Red for borrowed */
-}
-
 /* Add styles for key container and borrow button */
 .key-container {
     display: flex;
@@ -369,28 +353,6 @@ button[type="submit"]:disabled {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Status Indicator */
-.key-container::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    box-shadow: 0 0 10px;
-}
-
-.key-container:not(.disabled)::after {
-    background-color: #4CAF50; /* Green for available */
-    box-shadow: 0 0 10px #4CAF50;
-}
-
-.key-container.disabled::after {
-    background-color: #ff4444; /* Red for borrowed */
-    box-shadow: 0 0 10px #ff4444;
-}
-
 /* Hover Animation */
 @keyframes float {
     0% {
@@ -440,29 +402,6 @@ html, body {
     color: #ff4444;
 }
 
-/* Update your existing status indicator styles */
-.key-container::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-}
-
-.key-container:not(.disabled)::after {
-    background-color: #4CAF50;
-    box-shadow: 0 0 10px #4CAF50;
-}
-
-.key-container.disabled::after {
-    background-color: #ff4444;
-    box-shadow: 0 0 10px #ff4444;
-}
-
-/* Add these new styles to your existing 1st_flr.css */
-
 /* Return Keys Page Specific Styles */
 .no-keys-message {
     text-align: center;
@@ -509,8 +448,6 @@ html, body {
     margin-top: 10px;
 }
 
-/* Add these new styles to your existing 1st_flr.css */
-
 /* Status Indicator Styles */
 .status-indicator {
     padding: 5px 10px;
@@ -543,26 +480,4 @@ html, body {
 
 .key-container.borrowed .slider-img {
     cursor: not-allowed;
-}
-
-/* Update existing status indicator dot */
-.key-container::before {
-    content: '';
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    z-index: 1;
-}
-
-.key-container:not(.borrowed)::before {
-    background-color: #4CAF50;
-    box-shadow: 0 0 10px #4CAF50;
-}
-
-.key-container.borrowed::before {
-    background-color: #f44336;
-    box-shadow: 0 0 10px #f44336;
 }

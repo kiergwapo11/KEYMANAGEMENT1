@@ -17,6 +17,7 @@ $result = $conn->query($sql);
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
     <link rel="icon" type="image/x-icon" href="/pics/favicon.ico.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Available Keys</title>
