@@ -179,10 +179,12 @@ body{
     width: calc(100% - 300px);
     position: fixed;
     left: calc(250px + (100% - 250px) / 2);
-    top: 30%;
+    top: 45%;
     transform: translate(-50%, -50%);
     margin: 0;
     z-index: 1000;
+    max-height: 65vh;
+    overflow-y: auto;
 }
 
 #mainContent .registers h1 {
@@ -717,10 +719,12 @@ td.status-returned:hover {
     width: calc(100% - 300px);
     position: fixed;
     left: calc(250px + (100% - 250px) / 2);
-    top: 30%;
+    top: 45%;
     transform: translate(-50%, -50%);
     margin: 0;
     z-index: 1000;
+    max-height: 65vh;
+    overflow-y: auto;
 }
 
 /* Modern Title */
@@ -881,4 +885,22 @@ td.status-returned:hover {
         width: calc(100% - 300px);
         top: 30%;
     }
+}
+
+.registers::-webkit-scrollbar {
+    width: 8px;
+}
+
+.registers::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.registers::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.registers::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
