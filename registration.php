@@ -6,6 +6,7 @@
     <title>Registration</title>
     <link rel="icon" type="image/x-icon" href="Images/CTU Logo.png">
     <link rel="stylesheet" href="registration.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
