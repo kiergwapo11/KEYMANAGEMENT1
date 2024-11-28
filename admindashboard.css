@@ -171,45 +171,54 @@ body{
 
 /* Additional styles for the registers table */
 #mainContent .registers {
-    background-color: #E4E0E1;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0px 0px 16px 13px;
-    color: #2222;
-    width: 1000px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    margin-top: 100px;
+    background: rgb(255, 255, 255);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    width: calc(100% - 300px);
+    position: fixed;
+    left: calc(250px + (100% - 250px) / 2);
+    top: 30%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    z-index: 1000;
 }
 
 #mainContent .registers h1 {
-    color: #f1ad54;
-    font-family: "Holtwood One SC", serif;
-    font-size: 35px;
-    margin-bottom: 40px;
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
     text-align: center;
-    text-transform: uppercase;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1ad54;
 }
 
 #mainContent .registers table {
     width: 100%;
-    border-collapse: collapse;
-    font-size: 16px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
 }
 
 #mainContent .registers th,
 #mainContent .registers td {
-    padding: 20px 25px;
-    text-align: left;
-    border-bottom: 1px solid #697565;
-    color: #697565;
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #4a5568;
+    border-bottom: 1px solid #edf2f7;
 }
 
 #mainContent .registers th {
-    background-color: rgba(0, 0, 0, 0.1);
+    background: #f8f9fa;
+    color: #2c3e50;
     font-weight: 600;
-    font-size: 18px;
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #edf2f7;
 }
 
 #mainContent .registers tr:hover {
@@ -219,4 +228,657 @@ body{
 #mainContent .registers td:not(:last-child),
 #mainContent .registers th:not(:last-child) {
     padding-right: 40px;
+}
+
+/* Add these styles to your existing CSS */
+.dashboard-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.records-content {
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Records Header */
+.records-header {
+    margin-bottom: 20px;
+}
+
+.key-records-title {
+    color: #ffa500;
+    font-size: 24px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #ffa500;
+    margin-bottom: 20px;
+}
+
+/* Table Styles */
+.records-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto; /* Center the table */
+}
+
+.records-table th {
+    background: #f8f8f8;
+    color: #666;
+    padding: 18px 25px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.records-table td {
+    padding: 18px 25px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+}
+
+.records-table tr:hover td {
+    background: #fafafa;
+}
+
+/* Status Styles */
+.status-borrowed {
+    color: #ff0000;
+    font-weight: 500;
+}
+
+.status-returned {
+    color: #00b300;
+    font-weight: 500;
+}
+
+/* Optional: Add a subtle background to make it stand out more */
+td.status-borrowed {
+    position: relative;
+}
+
+td.status-returned {
+    position: relative;
+}
+
+/* Optional: Add hover effect */
+td.status-borrowed:hover {
+    color: #ff1a1a;
+}
+
+td.status-returned:hover {
+    color: #00cc00;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+    .records-content {
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .records-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .records-table {
+        font-size: 14px;
+    }
+}
+
+/* Content Layout */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 85vh;
+    padding: 0;
+    margin-left: 250px;
+    margin-top: -20px;
+}
+
+/* White Container */
+.white-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 50px;
+    width: 92%;
+    max-width: 1500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+}
+
+/* Title */
+.orange-title {
+    color: #ffa500;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 35px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+/* Table Styles - Making both tables consistent */
+.records-table, .registered-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+
+.records-table th, .registered-table th {
+    color: #666;
+    padding: 18px 25px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+    background: #f8f8f8;
+}
+
+.records-table td, .registered-table td {
+    padding: 18px 25px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+    background: #fff;
+    color: #444;
+}
+
+/* Remove last border */
+.records-table tr:last-child td,
+.registered-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover effect */
+.records-table tr:hover td,
+.registered-table tr:hover td {
+    background: #fafafa;
+}
+
+/* Adjusted Column Widths for Key Records */
+.records-table th:nth-child(1), 
+.records-table td:nth-child(1) { width: 18%; } /* Name */
+.records-table th:nth-child(2), 
+.records-table td:nth-child(2) { width: 12%; } /* ID Number */
+.records-table th:nth-child(3), 
+.records-table td:nth-child(3) { width: 15%; } /* Section */
+.records-table th:nth-child(4), 
+.records-table td:nth-child(4) { width: 12%; } /* Key */
+.records-table th:nth-child(5), 
+.records-table td:nth-child(5) { width: 15%; } /* Borrow Date */
+.records-table th:nth-child(6), 
+.records-table td:nth-child(6) { width: 15%; } /* Return Date */
+.records-table th:nth-child(7), 
+.records-table td:nth-child(7) { width: 13%; } /* Status */
+
+/* Adjusted Column Widths for Registered Users */
+.registered-table th:nth-child(1), 
+.registered-table td:nth-child(1) { width: 25%; } /* Name */
+.registered-table th:nth-child(2), 
+.registered-table td:nth-child(2) { width: 15%; } /* ID Number */
+.registered-table th:nth-child(3), 
+.registered-table td:nth-child(3) { width: 20%; } /* Section */
+.registered-table th:nth-child(4), 
+.registered-table td:nth-child(4) { width: 40%; } /* Email */
+
+/* Status Styles */
+.status-borrowed {
+    color: #ff4444;
+    font-weight: normal;
+}
+
+.status-returned {
+    color: #4CAF50;
+    font-weight: normal;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1600px) {
+    .white-container {
+        width: 94%;
+        padding: 35px 40px;
+    }
+}
+
+@media screen and (max-width: 1400px) {
+    .white-container {
+        width: 95%;
+        padding: 30px 35px;
+    }
+    
+    th, td {
+        padding: 18px 16px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .white-container {
+        width: 96%;
+        padding: 25px 30px;
+    }
+    
+    th, td {
+        padding: 16px 14px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .content-wrapper {
+        margin-left: 150px;
+        margin-top: -15px;
+    }
+    
+    .white-container {
+        width: 97%;
+        padding: 20px 25px;
+    }
+    
+    th, td {
+        padding: 15px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Logout Button Styles */
+.logout-btn {
+    background: none;
+    border: none;
+    color: #ffa500;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.logout-btn:hover {
+    color: #ff8c00;
+    background-color: rgba(255, 165, 0, 0.1);
+    transform: translateX(5px);
+    box-shadow: -2px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logout-btn:active {
+    transform: translateX(2px);
+}
+
+.logout-btn i {
+    margin-right: 8px;
+    transition: transform 0.3s ease;
+}
+
+.logout-btn:hover i {
+    transform: translateX(3px);
+}
+
+/* Add these styles for the records table */
+.white-container {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 50px;
+    width: 92%;
+    max-width: 1500px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+}
+
+.orange-title {
+    color: #f1ad54;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 35px;
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.records-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.records-table th {
+    background: #f8f8f8;
+    color: #666;
+    padding: 18px 25px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 15px;
+    border-bottom: 2px solid #eee;
+    text-transform: uppercase;
+}
+
+.records-table td {
+    padding: 18px 25px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+    color: #444;
+}
+
+.records-table tr:hover td {
+    background: #fafafa;
+    transition: background-color 0.3s ease;
+}
+
+/* Status Styles */
+.status-borrowed {
+    color: #ff0000;
+    font-weight: 500;
+    position: relative;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.status-returned {
+    color: #00b300;
+    font-weight: 500;
+    position: relative;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: rgba(0, 179, 0, 0.1);
+}
+
+/* Column Widths */
+.records-table th:nth-child(1), 
+.records-table td:nth-child(1) { width: 18%; } /* Name */
+.records-table th:nth-child(2), 
+.records-table td:nth-child(2) { width: 12%; } /* ID */
+.records-table th:nth-child(3), 
+.records-table td:nth-child(3) { width: 15%; } /* Section */
+.records-table th:nth-child(4), 
+.records-table td:nth-child(4) { width: 12%; } /* Key */
+.records-table th:nth-child(5), 
+.records-table td:nth-child(5) { width: 15%; } /* Borrow Date */
+.records-table th:nth-child(6), 
+.records-table td:nth-child(6) { width: 15%; } /* Return Date */
+.records-table th:nth-child(7), 
+.records-table td:nth-child(7) { width: 13%; text-align: center; } /* Status */
+
+/* Empty State */
+.records-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Table Styles */
+.records-table tr {
+    transition: background-color 0.3s ease;
+}
+
+/* Status row background colors */
+.records-table tr td.status-borrowed {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.records-table tr td.status-returned {
+    background-color: rgba(0, 179, 0, 0.1);
+}
+
+/* Make the entire row have the background color */
+.records-table tr:has(.status-borrowed) {
+    background-color: rgba(255, 0, 0, 0.05);
+}
+
+.records-table tr:has(.status-returned) {
+    background-color: rgba(0, 179, 0, 0.05);
+}
+
+/* Hover effects */
+.records-table tr:has(.status-borrowed):hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
+.records-table tr:has(.status-returned):hover {
+    background-color: rgba(0, 179, 0, 0.1);
+}
+
+/* Status text colors */
+.status-borrowed {
+    color: #ff0000;
+    font-weight: 500;
+}
+
+.status-returned {
+    color: #00b300;
+    font-weight: 500;
+}
+
+/* Table header */
+.records-table th {
+    background: #f8f8f8 !important; /* Keep header background unchanged */
+    color: #666;
+    padding: 18px 25px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Add these styles */
+.borrowed-row {
+    background-color: #fff1f1 !important; /* Light red */
+}
+
+.returned-row {
+    background-color: #f1fff1 !important; /* Light green */
+}
+
+.borrowed-row td:last-child {
+    color: #d32f2f; /* Darker red for status text */
+    font-weight: 500;
+}
+
+.returned-row td:last-child {
+    color: #2e7d32; /* Darker green for status text */
+    font-weight: 500;
+}
+
+/* Hover effects */
+.borrowed-row:hover {
+    background-color: #ffcdd2 !important; /* Slightly darker red on hover */
+}
+
+.returned-row:hover {
+    background-color: #c8e6c9 !important; /* Slightly darker green on hover */
+}
+
+/* Keep header styling */
+.records-table th {
+    background-color: #f8f8f8 !important;
+}
+
+/* Modern Container Styles */
+.registers {
+    background: rgb(255, 255, 255);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    width: calc(100% - 300px);
+    position: fixed;
+    left: calc(250px + (100% - 250px) / 2);
+    top: 30%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    z-index: 1000;
+}
+
+/* Modern Title */
+.registers h1 {
+    color: #2c3e50;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f1ad54;
+}
+
+/* Modern Table Styles */
+.records-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+}
+
+/* Header Styles */
+.records-table th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #edf2f7;
+}
+
+/* Cell Styles */
+.records-table td {
+    padding: 1rem;
+    font-size: 0.95rem;
+    color: #4a5568;
+    border-bottom: 1px solid #edf2f7;
+}
+
+/* Status Row Styles */
+.borrowed-row {
+    background-color: #fff1f1;
+    transition: all 0.3s ease;
+}
+
+.returned-row {
+    background-color: #f1fff1;
+    transition: all 0.3s ease;
+}
+
+/* Status Text Styles */
+.borrowed-row td:last-child {
+    color: #e53e3e;
+    font-weight: 500;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.returned-row td:last-child {
+    color: #38a169;
+    font-weight: 500;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+/* Status Indicators */
+.borrowed-row td:last-child::before,
+.returned-row td:last-child::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.borrowed-row td:last-child::before {
+    background-color: #e53e3e;
+}
+
+.returned-row td:last-child::before {
+    background-color: #38a169;
+}
+
+/* Hover Effects */
+.borrowed-row:hover {
+    background-color: #fff1f1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(229, 62, 62, 0.1);
+}
+
+.returned-row:hover {
+    background-color: #f1fff1;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(56, 161, 105, 0.1);
+}
+
+/* First and Last Cells Border Radius */
+.records-table tr:first-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.records-table tr:first-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.records-table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.records-table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .registers {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .records-table th,
+    .records-table td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Empty State */
+.records-table tr:only-child td {
+    text-align: center;
+    padding: 2rem;
+    color: #a0aec0;
+    font-style: italic;
+}
+
+/* Adjust for sidebar */
+@media (min-width: 768px) {
+    .registers {
+        margin-left: calc(250px + 5%);
+        transform: translate(-40%, -50%);
+    }
+}
+
+@media (max-width: 1400px) {
+    .registers {
+        width: calc(100% - 350px);
+        top: 30%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .registers {
+        width: calc(100% - 300px);
+        top: 30%;
+    }
 }
