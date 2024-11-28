@@ -40,7 +40,7 @@ if (isset($_POST['logout'])) {
         <section class="navigation-buttons">
             <ul>
                 <li><a href="available_keys.php">Borrow Key</a></li>
-                <li><a href="return.php">Return Key</a></li>
+                <li><a href="return_shaina.php">Return Key</a></li>
                 <!-- Log Out button triggers the logout form -->
                 <li class="logout">
                     <a href="#" onclick="document.getElementById('logoutForm').submit();">

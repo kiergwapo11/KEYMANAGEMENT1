@@ -460,3 +460,109 @@ html, body {
     background-color: #ff4444;
     box-shadow: 0 0 10px #ff4444;
 }
+
+/* Add these new styles to your existing 1st_flr.css */
+
+/* Return Keys Page Specific Styles */
+.no-keys-message {
+    text-align: center;
+    padding: 30px;
+    margin: 50px auto;
+    max-width: 500px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.no-keys-message p:first-child {
+    font-size: 1.5em;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.no-keys-message a {
+    display: inline-block;
+    color: #fff;
+    background-color: #3498db;
+    padding: 12px 25px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.no-keys-message a:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.borrow-date {
+    color: #666;
+    font-style: italic;
+}
+
+.return-prompt {
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* Add these new styles to your existing 1st_flr.css */
+
+/* Status Indicator Styles */
+.status-indicator {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-available {
+    background-color: #4CAF50;
+    color: white;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.status-borrowed {
+    background-color: #f44336;
+    color: white;
+    box-shadow: 0 2px 4px rgba(244, 67, 54, 0.3);
+}
+
+.key-container.borrowed {
+    opacity: 0.7;
+    pointer-events: none;
+    filter: grayscale(30%);
+}
+
+.key-container.borrowed .slider-img {
+    cursor: not-allowed;
+}
+
+/* Update existing status indicator dot */
+.key-container::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.key-container:not(.borrowed)::before {
+    background-color: #4CAF50;
+    box-shadow: 0 0 10px #4CAF50;
+}
+
+.key-container.borrowed::before {
+    background-color: #f44336;
+    box-shadow: 0 0 10px #f44336;
+}
