@@ -1,4 +1,8 @@
 <?php
+// Same structure as 3rd_flr.php but change:
+// - title to "4th Floor Keys"
+// - SQL query to "WHERE floor = '4th Floor'"
+// - h1 class="title" to "Fourth Floor Keys"
 session_start();
 
 if (!isset($_SESSION['user'])) {
@@ -9,18 +13,17 @@ if (!isset($_SESSION['user'])) {
 require_once 'database.php';
 $conn = $conn_key_records;
 
-// Get all keys and their status
-$sql = "SELECT * FROM avail_keys";
+// Get all keys for 3rd floor
+$sql = "SELECT * FROM avail_keys WHERE floor = 'Fourth Floor'";
 $result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
-    <link rel="icon" type="image/x-icon" href="/pics/favicon.ico.jpg">
+    <link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>First Floor Keys</title>
+    <title>Fourth Floor Keys</title>
     <link rel="stylesheet" href="1st_flr.css">
 </head>
 <body>
@@ -35,7 +38,7 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <h1 class="title">Choose what key you would like to borrow.</h1>
+    <h1 class="title">Third Floor Keys</h1>
 
     <section class="slider-container">
         <div class="slider-images">
@@ -44,11 +47,9 @@ $result = $conn->query($sql);
                 while ($row = $result->fetch_assoc()) {
                     $isBorrowed = $row["is_borrowed"] == 1;
                     $containerClass = $isBorrowed ? 'key-container borrowed' : 'key-container';
-                    $isLab = (strpos($row["key_name"], 'Lab') !== false); // Check if it's a lab key
                     ?>
                     <div class="<?php echo $containerClass; ?>">
-                        <div class="slider-img <?php if ($isLab) echo 'data-lab="true"'; ?>" 
-                             <?php if (!$isBorrowed) echo 'onclick="selectKey(this)"'; ?>>
+                        <div class="slider-img" <?php if (!$isBorrowed) echo 'onclick="selectKey(this)"'; ?>>
                             <img src="Images/keys.png" alt="Key">
                             <div class="details">
                                 <h1><?php echo htmlspecialchars($row["key_name"]); ?></h1>
@@ -61,6 +62,8 @@ $result = $conn->query($sql);
                     </div>
                     <?php
                 }
+            } else {
+                echo "<p>No keys available for the 3rd floor.</p>";
             }
             ?>
         </div>
@@ -97,4 +100,5 @@ $result = $conn->query($sql);
     }
     </script>
 </body>
-</html>
+</html> 
+?> 
