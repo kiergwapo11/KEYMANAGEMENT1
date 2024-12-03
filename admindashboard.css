@@ -48,7 +48,7 @@ body{
 
 .homepage .navigator ul li a {
     text-decoration: none;
-    color: #697565;
+    color: #ffffff;
     padding: 20px;  
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 400;
@@ -56,7 +56,7 @@ body{
 }
 
 .homepage .navigator ul li a:hover{
-    color: black;
+    color: #f1ad54;
     font-weight: 600;
 }
 
@@ -85,6 +85,11 @@ body{
     width: 400px;
     margin-left: 430px;
     margin-top: -270px;
+    transition: transform 0.2s ease;
+}
+
+.image:hover {
+    transform: scale(1.02);
 }
 
 .greetings{
@@ -92,11 +97,16 @@ body{
     margin-top: 200px;
     margin-left: 350px;
     background-color: #E4E0E1;
-    box-shadow: 0px 0px 16px 13px;
+    box-shadow: 0px 0px 16px 13px rgba(0, 0, 0, 0.1);
     color: #2222;
     width: 800px;
     height: 350px;
     border-radius: 20px;
+    transition: transform 0.2s ease;
+}
+
+.greetings:hover {
+    transform: translateY(-5px);
 }
 
 .greetings h2{
@@ -104,12 +114,14 @@ body{
     margin-top: 50px;
     margin-left: 20px;
     color: #f1ad54;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .greetings p{
     padding-left: 30px;
     font-size: 20px;
     color: #697565;
+    line-height: 1.5;
 }
 
 .statistics {

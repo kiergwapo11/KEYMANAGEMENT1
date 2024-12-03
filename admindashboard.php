@@ -18,6 +18,19 @@ if (!isset($_SESSION['admin_id']) || !isset($_SESSION['admin_email'])) {
 
 require_once 'database.php';
 
+// Add this function to get admin name
+function getAdminName($conn, $admin_id) {
+    $stmt = $conn->prepare("SELECT fullname FROM admin WHERE id = ?");
+    $stmt->bind_param("i", $admin_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = $result->fetch_assoc();
+    return $data['fullname'] ?? 'Admin'; // Returns 'Admin' if no name found
+}
+
+// Get admin name
+$adminName = getAdminName($conn_login_register, $_SESSION['admin_id']);
+
 // Function to get total registered users
 function getTotalUsers($conn) {
     $sql = "SELECT COUNT(*) as total FROM users";
@@ -56,6 +69,16 @@ $totalReturned = getTotalReturned($conn_key_records);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="admindashboard.css">
     <title>ADMIN - CTU KEY MANAGEMENT SYSTEM</title>
+    
+    <!-- Add these script tags -->
+    <script>
+        // Make PHP variables available to JavaScript
+        window.adminName = '<?php echo htmlspecialchars($adminName, ENT_QUOTES); ?>';
+        window.totalUsers = <?php echo $totalUsers; ?>;
+        window.totalBorrowed = <?php echo $totalBorrowed; ?>;
+        window.totalReturned = <?php echo $totalReturned; ?>;
+    </script>
+    <script src="admindashboard.js"></script>
 </head> 
 <body>
     <div class="homepage">
@@ -81,89 +104,5 @@ $totalReturned = getTotalReturned($conn_key_records);
             </div>
         </div>
     </div>
-
-    <script>
-    // Add this at the start of your script
-    const totalUsers = <?php echo $totalUsers; ?>;
-
-    function loadContent(page) {
-        const mainContent = document.getElementById('mainContent');
-        
-        if (page === 'registers') {
-            fetch('registers.php')
-                .then(response => response.text())
-                .then(html => {
-                    mainContent.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mainContent.innerHTML = 'Error loading content: ' + error;
-                });
-        } else if (page === 'admin') {
-            mainContent.innerHTML = `
-                <div class="greetings">
-                    <h2>Welcome back, Admin!</h2><br>
-                    <p>Here is an overview of your key management</p><br>
-                    <p>tasks for today. You can manage users, track</p><br>
-                    <p>borrowed items, and check recent activities</p><br>
-                    <p>from this dashboard.</p>
-                    <img src="Images/work.png" class="image">
-
-                    <div class="statistics">
-                        <h2>STATISTICS</h2>
-                        <div class="stat-item">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            <h3>Registered Users</h3>
-                            <p><?php echo $totalUsers; ?></p>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fa-solid fa-key"></i>
-                            <h3>Items Borrowed</h3>
-                            <p><?php echo $totalBorrowed; ?></p>
-                        </div>
-                        <div class="stat-item">
-                            <i class="fa-solid fa-hand-holding-hand"></i>
-                            <h3>Returned Key</h3>
-                            <p><?php echo $totalReturned; ?></p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        } else if (page === 'records') {
-            fetch('records.php')
-                .then(response => response.text())
-                .then(html => {
-                    mainContent.innerHTML = `
-                        <div class="registers">
-                            <h1>KEY RECORDS</h1>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>NAME</th>
-                                        <th>ID NUMBER</th>
-                                        <th>SECTION</th>
-                                        <th>KEY NAME</th>
-                                        <th>BORROWED AT</th>
-                                        <th>RETURNED AT</th>
-                                        <th>STATUS</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${html}
-                                </tbody>
-                            </table>
-                        </div>
-                    `;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    mainContent.innerHTML = 'Error loading records';
-                });
-        }
-    }
-
-    // Load admin content by default
-    loadContent('admin');
-    </script>
 </body>
 </html>
