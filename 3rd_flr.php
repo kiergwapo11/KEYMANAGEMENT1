@@ -34,7 +34,7 @@ $result = $conn->query($sql);
         </div>
     </div>
 
-    <h1 class="title">Third Floor Keys</h1>
+    <h1 class="title">Choose what key you would like to borrow.</h1>
 
     <section class="slider-container">
         <div class="slider-images">
