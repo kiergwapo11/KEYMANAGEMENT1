@@ -10,7 +10,7 @@ require_once 'database.php';
 $conn = $conn_key_records;
 
 // Get all keys and their status
-$sql = "SELECT * FROM avail_keys";
+$sql = "SELECT * FROM avail_keys WHERE floor = 'First Floor'";
 $result = $conn->query($sql);
 ?>
 
