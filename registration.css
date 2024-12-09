@@ -160,9 +160,14 @@ header {
 }
 
 /* Error Messages */
+.error-messages {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
 .alert {
     padding: 12px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;

@@ -62,14 +62,14 @@ if (isset($_POST["login"])) {
 
    <div class="wrapper">
        
-        <form action="adminlogin.php" method="post">
+        <form action="adminlogin.php" method="post" autocomplete="off">
             <h1>ADMIN LOG IN</h1>
             <div class="input-box">
-                <input type="text" name="username" placeholder="Email" required>
+                <input type="text" name="username" placeholder="Email" required autocomplete="off">
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
                 <i class='bx bxs-lock-alt'></i>
             </div>
             <button type="submit" name="login" class="btn"> Login </button>
@@ -84,7 +84,7 @@ if (isset($_POST["login"])) {
         <div class="image-container"></div>
     </div>
 
-    <button class="bottom-right-button" onclick="location.href='studentlogin.php'">Login as Student</button>
+    <a href="studentlogin.php" class="bottom-right-button">Login as Student</a>
 
 </body>
 </html>

@@ -53,14 +53,14 @@ if (isset($_POST['login'])) {
 ?>
    <div class="wrapper">
         <!-- The alert will be handled by JavaScript -->
-        <form action="studentlogin.php" method="post">
+        <form action="studentlogin.php" method="post" autocomplete="off">
             <h1>STUDENT LOG IN</h1>
             <div class="input-box">
-                <input type="text" name="idnum" placeholder="ID Number" required>
+                <input type="text" name="idnum" placeholder="ID Number" required autocomplete="off">
                 <i class='bx bxs-user'></i>
             </div>
             <div class="input-box">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
                 <i class='bx bxs-lock-alt'></i>
             </div>
             <button type="submit" name="login" class="btn">Login</button>
@@ -75,7 +75,7 @@ if (isset($_POST['login'])) {
         <div class="image-container"></div>
     </div>
 
-    <button class="bottom-right-button" onclick="location.href='adminlogin.php'">Login as Admin</button>
+    <a href="adminlogin.php" class="bottom-right-button">Login as Admin</a>
 
     <script>
         // Check if there's an alert message from PHP

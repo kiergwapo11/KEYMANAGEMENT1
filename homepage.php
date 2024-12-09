@@ -44,12 +44,15 @@ if (isset($_POST['logout'])) {
                     require_once "database.php";
                     // Fetch the username using the session ID
                     $id_number = $_SESSION['user'];
-                    $sql = "SELECT username FROM users WHERE borrower_id = '$id_number'";
-                    $result = mysqli_query($conn_key_records, $sql);
+                    $sql = "SELECT name FROM users WHERE idnum = ?";
+                    $stmt = $conn_login_register->prepare($sql);
+                    $stmt->bind_param("s", $id_number);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     
-                    if ($result && mysqli_num_rows($result) > 0) {
-                        $row = mysqli_fetch_assoc($result);
-                        $username = $row['username'];
+                    if ($result && $result->num_rows > 0) {
+                        $row = $result->fetch_assoc();
+                        $username = $row['name'];
                         echo "<h2>Welcome, " . htmlspecialchars($username) . "!</h2>";
                     } else {
                         echo "<h2>Welcome!</h2>";
