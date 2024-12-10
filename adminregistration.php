@@ -72,15 +72,15 @@
         
         <!-- Add 'name' attributes to capture input values in PHP -->
         <div class="input-box">
-          <input type="text" name="fullname" placeholder="Full Name" required>
+          <input type="text" name="fullname" placeholder="Full Name" required autocomplete="off">
           <i class="fas fa-user"></i>
         </div>
         <div class="input-box">
-          <input type="email" name="email" placeholder="Email Address" required>
+          <input type="email" name="email" placeholder="Email Address" required autocomplete="off">
           <i class="fas fa-envelope"></i>
         </div>
         <div class="input-box">
-          <input type="password" name="password" placeholder="Password" required>
+          <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
           <i class="fas fa-lock"></i>
         </div>
 
