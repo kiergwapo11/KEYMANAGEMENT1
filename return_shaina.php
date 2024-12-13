@@ -117,7 +117,7 @@ function selectKey(element) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Successfully returned ' + keyName);
+                
                 location.reload();
             } else {
                 alert('Error: ' + (data.message || 'Failed to return key'));

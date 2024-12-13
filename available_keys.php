@@ -83,7 +83,7 @@ $result = $conn->query($sql);
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Successfully borrowed ' + keyName);
+                 
                     location.reload();
                 } else {
                     alert('Error: ' + (data.message || 'Failed to borrow key'));
