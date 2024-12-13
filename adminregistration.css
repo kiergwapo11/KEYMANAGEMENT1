@@ -172,6 +172,26 @@ body {
     100% { transform: rotate(360deg); }
   }
 
+/* Error Messages */
+.error-messages {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.alert {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-danger {
+    background-color: #fee2e2; /* Light red background */
+    color: #dc2626; /* Dark red text */
+    border: 1px solid #fecaca; /* Border color */
+}
+
 
 
 
