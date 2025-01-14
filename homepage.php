@@ -75,7 +75,7 @@ if (isset($_POST['logout'])) {
                         echo "</div>";
                     }
                     ?>
-                    <p>Access and manage your key borrowing activities wewwwww</p>
+                    <p>Access and manage your key borrowing activities</p>
                 </div>
               
             </div>
