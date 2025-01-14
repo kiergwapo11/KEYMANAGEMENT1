@@ -30,7 +30,7 @@ if (isset($_POST['logout'])) {
             <div class="logo">
                 <img src="Images/CTU Logo.png" alt="CTU Logo">
                 <div class="title">
-                    <h1>Key Management System nothing</h1>
+                    <h1>Key Management System</h1>
                     <p class="tagline">College of Engineering</p>
                 </div>
                 <img src="Images/COE.png" alt="COE">
