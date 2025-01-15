@@ -111,9 +111,11 @@ body {
   color: white;
   font-weight: 600;
   transition-duration: 1s;
+  margin-bottom: 15px;
+  text-decoration: none;
 }
 
-.wrapper .btn:hover {
+.btn:hover {
   transition-duration: 1s;
   background-color: gray;
   overflow: hidden;

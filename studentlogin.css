@@ -98,7 +98,7 @@ body {
   text-decoration: underline;
 }
 
-.wrapper .btn {
+.wrapper .btn, .wrapper .admin-link a {
   width: 100%;
   height: 45px;
   background: black;
@@ -111,18 +111,35 @@ body {
   color: white;
   font-weight: 600;
   transition-duration: 1s;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.wrapper .btn:hover {
+.btn:hover, .wrapper .admin-link a:hover {
   transition-duration: 1s;
   background-color: gray;
   overflow: hidden;
+  text-decoration: none;
+}
+
+.wrapper .admin-link {
+  font-size: 14.5px;
+  text-align: center;
+  margin: 5px 0 15px;
+  width: 100%;
+}
+
+.admin-link a {
+  text-decoration: none;
+  display: inline-block;
 }
 
 .wrapper .register-link {
   font-size: 14.5px;
   text-align: center;
-  margin: 20px 0 15px;
+  margin: 5px 0;
   color: black;
 }
 
@@ -154,21 +171,8 @@ body {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
-.bottom-right-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #000000;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  transition: background-color 0.3s;
-}
-
-.bottom-right-button:hover {
-  background-color: #555;
+.admin-btn {
+  margin-top: 5px; /* Add some space between the register link and admin button */
 }
 
 

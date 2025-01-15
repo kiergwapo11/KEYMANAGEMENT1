@@ -4,15 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
+    <link rel="icon" type="image/x-icon" href="Images/CTU Logo.png">
     <link rel="stylesheet" href="registration.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="whole">
+    <?php
+    session_start();
+    require_once "database.php";
+
+    // Initialize errors array
+    $errors = array();
+
+    if (isset($_POST["submit"])) {
+        $fullname = $_POST["username"];
+        $idnum = $_POST["idnum"];
+        $section = $_POST["section"];
+        $email = $_POST["email"];
+        $password = $_POST["password"];
+
+        // Check if ID number already exists
+        $checkId = "SELECT * FROM users WHERE idnum = ?";
+        $stmt = mysqli_stmt_init($conn_login_register);
+        if (mysqli_stmt_prepare($stmt, $checkId)) {
+            mysqli_stmt_bind_param($stmt, "s", $idnum);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            if (mysqli_num_rows($result) > 0) {
+                $errors[] = "This ID number is already registered.";
+            }
+        }
+
+        // Other validations
+        if (strlen($idnum) < 7) {
+            $errors[] = "ID number must be 7 digits long.";
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors[] = "Email is not valid.";
+        }
+
+        if (count($errors) === 0) {
+            // Continue with registration if no errors
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $sql = "INSERT INTO users (name, idnum, section, email, password) VALUES (?, ?, ?, ?, ?)";
+            $stmt = mysqli_stmt_init($conn_login_register);
+            if (mysqli_stmt_prepare($stmt, $sql)) {
+                mysqli_stmt_bind_param($stmt, "sssss", $fullname, $idnum, $section, $email, $hashed_password);
+                if (mysqli_stmt_execute($stmt)) {
+                    $_SESSION['user'] = $email;
+                    echo "<script>
+                        alert('You have successfully registered!');
+                        window.location.href='studentlogin.php';
+                    </script>";
+                    exit();
+                } else {
+                    $errors[] = "Something went wrong: " . mysqli_stmt_error($stmt);
+                }
+            } else {
+                $errors[] = "Something went wrong: " . mysqli_error($conn_login_register);
+            }
+        }
+    }
+    ?>
         <div class="wrapper">
             <form action="registration.php" method="post" autocomplete="off">
                 <h1>Registration Form</h1>
-
                 <?php if (!empty($errors)): ?>
                     <div class="error-messages">
                         <?php foreach ($errors as $error): ?>
