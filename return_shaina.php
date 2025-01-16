@@ -54,9 +54,9 @@ try {
     <div class="Home Page">
         <div class="navbar">
             <ul>
-                <li><a href="available_keys.php">FIRST FLOOR <i class="fa fa-key"></i></a></li>
-                <li><a href="3rd_flr.html">SECOND FLOOR <i class="fa fa-key"></i></a></li>
-                <li><a href="4th_flr.html">THIRD FLOOR <i class="fa fa-key"></i></a></li>
+                <li><a href="#">FIRST FLOOR <i class="fa fa-key"></i></a></li>
+                <li><a href="#">SECOND FLOOR <i class="fa fa-key"></i></a></li>
+                <li><a href="#">THIRD FLOOR <i class="fa fa-key"></i></a></li>
                 <li><a href="homepage.php">HOME</a></li>
             </ul>
         </div>
@@ -100,34 +100,63 @@ try {
     </div>
 <?php endif; ?>
 
+<!-- Add modal HTML before the script tag -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-content">
+        <h2>Confirm Return</h2>
+        <p id="modalMessage"></p>
+        <div class="modal-buttons">
+            <button class="confirm-btn" onclick="confirmReturn()">Confirm</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <script>
+let selectedKeyElement = null;
+
 function selectKey(element) {
     const keyName = element.querySelector('.details h1').innerText;
+    selectedKeyElement = element;
     
-    if (confirm('Are you sure you want to return ' + keyName + '?')) {
-        fetch('process_return.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                selectedKey: keyName
-            })
+    // Show modal
+    document.getElementById('modalMessage').textContent = 'Are you sure you want to return ' + keyName + '?';
+    document.getElementById('confirmModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+    selectedKeyElement = null;
+}
+
+function confirmReturn() {
+    if (!selectedKeyElement) return;
+    
+    const keyName = selectedKeyElement.querySelector('.details h1').innerText;
+    
+    fetch('process_return.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            selectedKey: keyName
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Successfully returned ' + keyName);
-                location.reload();
-            } else {
-                alert('Error: ' + (data.message || 'Failed to return key'));
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
-    }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + (data.message || 'Failed to return key'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+    
+    closeModal();
 }
 </script>
 

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Form</title>
+  <title>Admin Registration Form</title>
   <link rel="stylesheet" href="adminregistration.css">
+  <link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
@@ -17,7 +18,7 @@
         // Retrieve and sanitize input
         $fullname = trim($_POST["fullname"]);
         $email = trim($_POST["email"]);
-        $password = $_POST["password"];
+        $password = $_POST["new_password"];
         $errors = array();
 
         // Validate email format
@@ -32,44 +33,22 @@
 
         // Check if there are any errors
         if (count($errors) > 0) {
+            $errorMessages = "<div class='error-messages'>"; // Start error messages container
             foreach ($errors as $error) {
-                echo "<div class='alert alert-danger'>$error</div>";
+                $errorMessages .= "<div class='alert alert-danger'>$error</div>"; // Use the same classes
             }
-        } else {
-            // Hash the password for security
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            // Prepare SQL to insert the new admin record
-            $sql = "INSERT INTO admin (fullname, email, password) VALUES (?, ?, ?)";
-            $stmt = $conn_login_register->prepare($sql);
-
-            if ($stmt) {
-                // Bind parameters and execute
-                $stmt->bind_param("sss", $fullname, $email, $hashed_password);
-
-                if ($stmt->execute()) {
-                    echo "<script>
-                        alert('Registration successful!');
-                        window.location.href = 'adminlogin.php';
-                        </script>";
-                } else {
-                    echo "<div class='alert alert-danger'>Error: " . $stmt->error . "</div>";
-                }
-                $stmt->close();
-            } else {
-                echo "<div class='alert alert-danger'>Error: " . $conn_login_register->error . "</div>";
-            }
+            $errorMessages .= "</div>"; // End error messages container
         }
-
-        // Close the database connection
-        $conn_login_register->close();
     }
     ?>
     
     <div class="wrapper">
-      <form action="adminregistration.php" method="post">
+      <form action="adminregistration.php" method="post" autocomplete="off">
         <h1>Register As Admin</h1>
-        
+
+        <!-- Display error messages inside the form -->
+        <?php if (isset($errorMessages)) echo $errorMessages; ?>
+
         <!-- Add 'name' attributes to capture input values in PHP -->
         <div class="input-box">
           <input type="text" name="fullname" placeholder="Full Name" required autocomplete="off">
@@ -80,7 +59,7 @@
           <i class="fas fa-envelope"></i>
         </div>
         <div class="input-box">
-          <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
+          <input type="password" name="new_password" placeholder="Password" required autocomplete="off">
           <i class="fas fa-lock"></i>
         </div>
 

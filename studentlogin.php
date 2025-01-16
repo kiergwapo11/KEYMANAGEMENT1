@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Student Login</title>
     <link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
     <link rel="stylesheet" href="studentlogin.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -64,6 +64,9 @@ if (isset($_POST['login'])) {
                 <i class='bx bxs-lock-alt'></i>
             </div>
             <button type="submit" name="login" class="btn">Login</button>
+            <div class="admin-link">
+                <a href="adminlogin.php" class="btn">Login as Admin</a>
+            </div>
             <div class="register-link">
                 <p>Don't have an account? <a href="registration.php">Register</a></p>
             </div>
@@ -74,8 +77,6 @@ if (isset($_POST['login'])) {
     <div class="right">
         <div class="image-container"></div>
     </div>
-
-    <a href="adminlogin.php" class="bottom-right-button">Login as Admin</a>
 
     <script>
         // Check if there's an alert message from PHP

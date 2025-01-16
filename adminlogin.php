@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Admin Login</title>
     <link rel="icon" type="image/x-icon" href="Images/CTU LOGO.png">
     <link rel="stylesheet" href="studentlogin.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -72,7 +72,8 @@ if (isset($_POST["login"])) {
                 <input type="password" name="password" placeholder="Password" required autocomplete="new-password">
                 <i class='bx bxs-lock-alt'></i>
             </div>
-            <button type="submit" name="login" class="btn"> Login </button>
+            <button type="submit" name="login" class="btn">Login</button>
+            <button onclick="window.location.href='studentlogin.php'" type="button" class="btn">Login as Student</button>
             <div class="register-link">
                 <p>Don't have an account? <a href="adminregistration.php">Register</a></p>
             </div>
@@ -84,7 +85,7 @@ if (isset($_POST["login"])) {
         <div class="image-container"></div>
     </div>
 
-    <a href="studentlogin.php" class="bottom-right-button">Login as Student</a>
+  
 
 </body>
 </html>

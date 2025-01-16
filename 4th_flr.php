@@ -67,38 +67,67 @@ $result = $conn->query($sql);
             }
             ?>
         </div>
-    </section>
+        </section>
 
-    <script>
-    function selectKey(element) {
-        const keyName = element.querySelector('.details h1').innerText;
-        
-        if (confirm('Are you sure you want to borrow ' + keyName + '?')) {
-            fetch('borrow_key.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    selectedKey: keyName
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Successfully borrowed ' + keyName);
-                    location.reload();
-                } else {
-                    alert('Error: ' + (data.message || 'Failed to borrow key'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            });
+<!-- Add modal HTML -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-content">
+        <h2>Confirm Borrowing</h2>
+        <p id="modalMessage"></p>
+        <div class="modal-buttons">
+            <button class="confirm-btn" onclick="confirmBorrow()">Confirm</button>
+            <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Replace existing script with new version -->
+<script>
+let selectedKeyElement = null;
+
+function selectKey(element) {
+    const keyName = element.querySelector('.details h1').innerText;
+    selectedKeyElement = element;
+    
+    // Show modal
+    document.getElementById('modalMessage').textContent = 'Are you sure you want to borrow ' + keyName + '?';
+    document.getElementById('confirmModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+    selectedKeyElement = null;
+}
+
+function confirmBorrow() {
+    if (!selectedKeyElement) return;
+    
+    const keyName = selectedKeyElement.querySelector('.details h1').innerText;
+    
+    fetch('borrow_key.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            selectedKey: keyName
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert('Error: ' + (data.message || 'Failed to borrow key'));
         }
-    }
-    </script>
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+    
+    closeModal();
+}
+</script>
 </body>
-</html> 
-?> 
+</html>
