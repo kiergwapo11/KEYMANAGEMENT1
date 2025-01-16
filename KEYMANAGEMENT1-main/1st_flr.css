@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+    background-size: 100%;
+    font-family: Japanese_2;
+}
+
+.title{
+    margin-top: 20px;
+    color: white;
+    text-align: center;
+}
+
+.navbar {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar ul li {
+    display: inline-block;
+    margin: 10px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+}
+
+.navbar ul li a:hover {
+    color: rgb(255, 183, 0);
+}
+
+.slider-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* Align images to the bottom */
+}
+
+.slider-images {
+    display: flex;
+    gap: 30px; /* Increase the gap for better spacing */
+}
+
+.slider-img {
+    width: 200px; /* Set a fixed width for each image */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.selected {
+    border: 5px solid #FFD700; /* Gold border */
+    border-radius: 10px ;
+    transform: scale(1.15); /* Slightly increase the size */
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+.slider-img img {
+    width: 100%; /* Make the image fill the container */
+    height: 400px; /* Maintain the aspect ratio */
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.slider-img:hover {
+    transform: scale(1.1); /* Add a slight zoom effect on hover */
+    z-index: 1;
+}
+
+
+
+.details {
+    text-align: center;
+    margin-top: 10px;
+    font-family: 'Arial', sans-serif;
+    color: rgb(255, 255, 255);
+}
+
+.details h1 {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+}
+
+.details h2 {
+    font-size: 14px;
+}
+
+.details p {
+    font-size: 12px;
+    color: rgb(255, 253, 253);
+}
+
+#return-btn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#return-btn:hover {
+    background-color: #FFD700;
+}
