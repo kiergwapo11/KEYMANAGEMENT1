@@ -1,0 +1,139 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: "Anton", sans-serif;
+
+}
+
+body{
+  height: 100vh;
+  background-image:url('Images/CTU.png');
+  background-repeat: no-repeat;  
+  background-attachment: fixed; 
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+}
+.main{
+  background-image: url(Images/CTU.png);
+  width: 350px;
+  height: 500px;
+  margin-left: 120px;
+  margin-top: 100px;
+  background: transparent;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 5px 20px 50px #f1f1f1;
+}
+#chk{
+  display: none;
+}
+.admin{
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin-top: -50px;
+}
+label{
+  color: #ffff;
+  font-size: 2.3em;
+  justify-content: center;
+  display: flex;
+  margin: 60px;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+  margin-bottom: -10px;
+}
+input{
+  width: 60%;
+  height: 20px;
+  border: none;
+  margin: 30px auto;
+  padding: 15px;
+  display: flex;  
+  color: #FFF2E1;
+}
+ input[type="text"], input[type="password"]{
+  color: #212121;
+  font-size: 12px;
+  background-color: #FFF2E1;
+}
+button{
+  font-size: 16px;
+  font-weight: 600;
+  color: #f2f2f2;
+  width: 60%;
+  height: 40px;
+  margin: 10px auto;
+  justify-content: center;
+  display: block;
+  margin-top: 20px;
+  background: #fe6e00;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  transition: .2s ease-in;
+}
+button:hover{
+  cursor: pointer;
+  background-color:#ECB176 ;
+}
+.admin .register{
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+}
+.register p {
+  text-decoration: none;
+  color: #6F4E37;
+  font-size: 16px;
+  font-weight: 200;
+}
+.register a {
+  text-decoration: none;
+  color: #6F4E37;
+  font-weight: 600;
+}
+
+.login label{  
+  transform: scale(.6);
+}
+
+#chk:checked ~ .admin label{
+  transform: scale(.6);
+}
+
+.register p {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 200;
+}
+.register a {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+}
+.register a:hover{
+  text-decoration: underline;
+  color: rgb(89, 89, 241);
+}
+.logo .logo{
+  width: 100px;
+  margin-left: 250px; 
+  margin-top: 20px;  
+}
+.text h1{
+justify-content: right;
+display: flex;
+margin-top: -400px;
+margin-right: 250px;
+font-size: 70px;
+color: #000000;
+font-family: "Goblin One", serif;
+font-weight: 400px;
+}
+.logo .logo{
+width: 80px;
+margin-left: 130px;  
+}

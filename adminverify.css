@@ -1,0 +1,113 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.verification-box {
+    background-color: transparent;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+    text-align: center;
+}
+
+.verification-box h2 {
+    margin-bottom: 20px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 2px solid #333;
+    outline: none;
+    background: transparent;
+}
+
+.input-box label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 16px;
+    color: #666;
+    transition: 0.3s;
+}
+
+.input-box input:focus ~ label,
+.input-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #333;
+    font-size: 12px;
+}
+
+.button-container {
+    text-align: center;
+}
+
+.button-container button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+.button-container button:hover {
+    background-color: #0056b3;
+}
+
+.bottom-right-button {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    color: black;
+    border-color: black;
+    padding: 10px 20px;
+    border-radius: 50px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.bottom-right-button:hover {
+    background-color: gray;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 14px;
+    color: red;
+    font-weight: bold;
+}
