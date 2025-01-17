@@ -152,6 +152,7 @@ body {
 .bottom-right-button:hover {
   background-color: gray;
 }
+
 .btn-loading {
     cursor: not-allowed;
     background-color: #ddd;
@@ -179,7 +180,7 @@ body {
 }
 
 .alert {
-    padding: 12px;
+    padding: 12px 15px;
     margin-bottom: 10px;
     border-radius: 8px;
     font-size: 14px;
@@ -187,9 +188,15 @@ body {
 }
 
 .alert-danger {
-    background-color: #fee2e2; /* Light red background */
-    color: #dc2626; /* Dark red text */
-    border: 1px solid #fecaca; /* Border color */
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
 

@@ -84,5 +84,46 @@ if (isset($_POST['login'])) {
             alert("<?php echo addslashes($alertMessage); ?>");
         <?php endif; ?>
     </script>
+
+    <!-- Add modal HTML before the closing body tag -->
+    <div class="modal-overlay" id="adminCodeModal">
+        <div class="modal-content">
+            <h2>Admin Verification</h2>
+            <div class="admin-code-input">
+                <input type="password" id="adminCode" placeholder="Enter Admin Code" maxlength="4">
+                <p id="errorMessage" class="error-message"></p>
+            </div>
+            <div class="modal-buttons">
+                <button class="confirm-btn" onclick="verifyAdminCode()">Verify</button>
+                <button class="cancel-btn" onclick="closeAdminModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function showAdminModal(event) {
+        event.preventDefault(); // Prevent immediate navigation
+        document.getElementById('adminCodeModal').style.display = 'block';
+        document.getElementById('adminCode').value = ''; // Clear previous input
+        document.getElementById('errorMessage').textContent = ''; // Clear previous error
+    }
+
+    function closeAdminModal() {
+        document.getElementById('adminCodeModal').style.display = 'none';
+    }
+
+    function verifyAdminCode() {
+        const code = document.getElementById('adminCode').value;
+        if (code === '0123') { // Your admin code
+            window.location.href = 'adminlogin.php';
+        } else {
+            document.getElementById('errorMessage').textContent = 'Invalid admin code';
+            document.getElementById('adminCode').value = ''; // Clear invalid input
+        }
+    }
+
+    // Add event listener to the admin link
+    document.querySelector('.admin-link a').addEventListener('click', showAdminModal);
+    </script>
 </body>
 </html>

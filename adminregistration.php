@@ -31,13 +31,48 @@
             $errors[] = "Password must be at least 6 characters long.";
         }
 
-        // Check if there are any errors
-        if (count($errors) > 0) {
-            $errorMessages = "<div class='error-messages'>"; // Start error messages container
-            foreach ($errors as $error) {
-                $errorMessages .= "<div class='alert alert-danger'>$error</div>"; // Use the same classes
+        // Check if email already exists
+        $check_email = "SELECT * FROM admin WHERE email = ?";
+        $stmt_check = $conn_login_register->prepare($check_email);
+        $stmt_check->bind_param("s", $email);
+        $stmt_check->execute();
+        $result = $stmt_check->get_result();
+
+        if ($result->num_rows > 0) {
+            $errors[] = "Email already registered. Please use a different email.";
+        }
+
+        if (empty($errors)) {
+            // Hash the password
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            
+            // Insert new admin
+            $sql = "INSERT INTO admin (fullname, email, password) VALUES (?, ?, ?)";
+            $stmt = $conn_login_register->prepare($sql);
+            
+            if ($stmt) {
+                $stmt->bind_param("sss", $fullname, $email, $hashed_password);
+                
+                if ($stmt->execute()) {
+                    // Set success message
+                    $_SESSION['success_message'] = "Registration successful! You can now login.";
+                    echo "<script>
+                        alert('Registration successful! You can now login.');
+                        window.location.href = 'adminlogin.php';
+                    </script>";
+                    exit;
+                } else {
+                    $errors[] = "Registration failed: " . $stmt->error;
+                }
             }
-            $errorMessages .= "</div>"; // End error messages container
+        }
+
+        if (!empty($errors)) {
+            $errorMessages = "<div class='error-messages'>";
+            foreach ($errors as $error) {
+                $errorMessages .= "<div class='alert alert-danger'>$error</div>";
+            }
+            $errorMessages .= "</div>";
         }
     }
     ?>
